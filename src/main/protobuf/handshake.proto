@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message HandshakeMessage {
+  string senderPeerName = 1;
+  string leaderName = 2;
+}
