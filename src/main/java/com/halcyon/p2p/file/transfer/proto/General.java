@@ -44,6 +44,66 @@ public final class General {
      */
     Handshake.HandshakeMessageOrBuilder getHandshakeOrBuilder();
 
+    /**
+     * <code>.PingMessage ping = 2;</code>
+     * @return Whether the ping field is set.
+     */
+    boolean hasPing();
+    /**
+     * <code>.PingMessage ping = 2;</code>
+     * @return The ping.
+     */
+    Ping.PingMessage getPing();
+    /**
+     * <code>.PingMessage ping = 2;</code>
+     */
+    Ping.PingMessageOrBuilder getPingOrBuilder();
+
+    /**
+     * <code>.PongMessage pong = 3;</code>
+     * @return Whether the pong field is set.
+     */
+    boolean hasPong();
+    /**
+     * <code>.PongMessage pong = 3;</code>
+     * @return The pong.
+     */
+    Pong.PongMessage getPong();
+    /**
+     * <code>.PongMessage pong = 3;</code>
+     */
+    Pong.PongMessageOrBuilder getPongOrBuilder();
+
+    /**
+     * <code>.CancelPingsMessage cancelPings = 4;</code>
+     * @return Whether the cancelPings field is set.
+     */
+    boolean hasCancelPings();
+    /**
+     * <code>.CancelPingsMessage cancelPings = 4;</code>
+     * @return The cancelPings.
+     */
+    Ping.CancelPingsMessage getCancelPings();
+    /**
+     * <code>.CancelPingsMessage cancelPings = 4;</code>
+     */
+    Ping.CancelPingsMessageOrBuilder getCancelPingsOrBuilder();
+
+    /**
+     * <code>.CancelPongsMessage cancelPongs = 5;</code>
+     * @return Whether the cancelPongs field is set.
+     */
+    boolean hasCancelPongs();
+    /**
+     * <code>.CancelPongsMessage cancelPongs = 5;</code>
+     * @return The cancelPongs.
+     */
+    Pong.CancelPongsMessage getCancelPongs();
+    /**
+     * <code>.CancelPongsMessage cancelPongs = 5;</code>
+     */
+    Pong.CancelPongsMessageOrBuilder getCancelPongsOrBuilder();
+
     General.ProtobufMessage.PayloadCase getPayloadCase();
   }
   /**
@@ -90,6 +150,10 @@ public final class General {
         implements com.google.protobuf.Internal.EnumLite,
             com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       HANDSHAKE(1),
+      PING(2),
+      PONG(3),
+      CANCELPINGS(4),
+      CANCELPONGS(5),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -108,6 +172,10 @@ public final class General {
       public static PayloadCase forNumber(int value) {
         switch (value) {
           case 1: return HANDSHAKE;
+          case 2: return PING;
+          case 3: return PONG;
+          case 4: return CANCELPINGS;
+          case 5: return CANCELPONGS;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -154,6 +222,130 @@ public final class General {
       return Handshake.HandshakeMessage.getDefaultInstance();
     }
 
+    public static final int PING_FIELD_NUMBER = 2;
+    /**
+     * <code>.PingMessage ping = 2;</code>
+     * @return Whether the ping field is set.
+     */
+    @java.lang.Override
+    public boolean hasPing() {
+      return payloadCase_ == 2;
+    }
+    /**
+     * <code>.PingMessage ping = 2;</code>
+     * @return The ping.
+     */
+    @java.lang.Override
+    public Ping.PingMessage getPing() {
+      if (payloadCase_ == 2) {
+         return (Ping.PingMessage) payload_;
+      }
+      return Ping.PingMessage.getDefaultInstance();
+    }
+    /**
+     * <code>.PingMessage ping = 2;</code>
+     */
+    @java.lang.Override
+    public Ping.PingMessageOrBuilder getPingOrBuilder() {
+      if (payloadCase_ == 2) {
+         return (Ping.PingMessage) payload_;
+      }
+      return Ping.PingMessage.getDefaultInstance();
+    }
+
+    public static final int PONG_FIELD_NUMBER = 3;
+    /**
+     * <code>.PongMessage pong = 3;</code>
+     * @return Whether the pong field is set.
+     */
+    @java.lang.Override
+    public boolean hasPong() {
+      return payloadCase_ == 3;
+    }
+    /**
+     * <code>.PongMessage pong = 3;</code>
+     * @return The pong.
+     */
+    @java.lang.Override
+    public Pong.PongMessage getPong() {
+      if (payloadCase_ == 3) {
+         return (Pong.PongMessage) payload_;
+      }
+      return Pong.PongMessage.getDefaultInstance();
+    }
+    /**
+     * <code>.PongMessage pong = 3;</code>
+     */
+    @java.lang.Override
+    public Pong.PongMessageOrBuilder getPongOrBuilder() {
+      if (payloadCase_ == 3) {
+         return (Pong.PongMessage) payload_;
+      }
+      return Pong.PongMessage.getDefaultInstance();
+    }
+
+    public static final int CANCELPINGS_FIELD_NUMBER = 4;
+    /**
+     * <code>.CancelPingsMessage cancelPings = 4;</code>
+     * @return Whether the cancelPings field is set.
+     */
+    @java.lang.Override
+    public boolean hasCancelPings() {
+      return payloadCase_ == 4;
+    }
+    /**
+     * <code>.CancelPingsMessage cancelPings = 4;</code>
+     * @return The cancelPings.
+     */
+    @java.lang.Override
+    public Ping.CancelPingsMessage getCancelPings() {
+      if (payloadCase_ == 4) {
+         return (Ping.CancelPingsMessage) payload_;
+      }
+      return Ping.CancelPingsMessage.getDefaultInstance();
+    }
+    /**
+     * <code>.CancelPingsMessage cancelPings = 4;</code>
+     */
+    @java.lang.Override
+    public Ping.CancelPingsMessageOrBuilder getCancelPingsOrBuilder() {
+      if (payloadCase_ == 4) {
+         return (Ping.CancelPingsMessage) payload_;
+      }
+      return Ping.CancelPingsMessage.getDefaultInstance();
+    }
+
+    public static final int CANCELPONGS_FIELD_NUMBER = 5;
+    /**
+     * <code>.CancelPongsMessage cancelPongs = 5;</code>
+     * @return Whether the cancelPongs field is set.
+     */
+    @java.lang.Override
+    public boolean hasCancelPongs() {
+      return payloadCase_ == 5;
+    }
+    /**
+     * <code>.CancelPongsMessage cancelPongs = 5;</code>
+     * @return The cancelPongs.
+     */
+    @java.lang.Override
+    public Pong.CancelPongsMessage getCancelPongs() {
+      if (payloadCase_ == 5) {
+         return (Pong.CancelPongsMessage) payload_;
+      }
+      return Pong.CancelPongsMessage.getDefaultInstance();
+    }
+    /**
+     * <code>.CancelPongsMessage cancelPongs = 5;</code>
+     */
+    @java.lang.Override
+    public Pong.CancelPongsMessageOrBuilder getCancelPongsOrBuilder() {
+      if (payloadCase_ == 5) {
+         return (Pong.CancelPongsMessage) payload_;
+      }
+      return Pong.CancelPongsMessage.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -171,6 +363,18 @@ public final class General {
       if (payloadCase_ == 1) {
         output.writeMessage(1, (Handshake.HandshakeMessage) payload_);
       }
+      if (payloadCase_ == 2) {
+        output.writeMessage(2, (Ping.PingMessage) payload_);
+      }
+      if (payloadCase_ == 3) {
+        output.writeMessage(3, (Pong.PongMessage) payload_);
+      }
+      if (payloadCase_ == 4) {
+        output.writeMessage(4, (Ping.CancelPingsMessage) payload_);
+      }
+      if (payloadCase_ == 5) {
+        output.writeMessage(5, (Pong.CancelPongsMessage) payload_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -183,6 +387,22 @@ public final class General {
       if (payloadCase_ == 1) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, (Handshake.HandshakeMessage) payload_);
+      }
+      if (payloadCase_ == 2) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, (Ping.PingMessage) payload_);
+      }
+      if (payloadCase_ == 3) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, (Pong.PongMessage) payload_);
+      }
+      if (payloadCase_ == 4) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, (Ping.CancelPingsMessage) payload_);
+      }
+      if (payloadCase_ == 5) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, (Pong.CancelPongsMessage) payload_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -205,6 +425,22 @@ public final class General {
           if (!getHandshake()
               .equals(other.getHandshake())) return false;
           break;
+        case 2:
+          if (!getPing()
+              .equals(other.getPing())) return false;
+          break;
+        case 3:
+          if (!getPong()
+              .equals(other.getPong())) return false;
+          break;
+        case 4:
+          if (!getCancelPings()
+              .equals(other.getCancelPings())) return false;
+          break;
+        case 5:
+          if (!getCancelPongs()
+              .equals(other.getCancelPongs())) return false;
+          break;
         case 0:
         default:
       }
@@ -223,6 +459,22 @@ public final class General {
         case 1:
           hash = (37 * hash) + HANDSHAKE_FIELD_NUMBER;
           hash = (53 * hash) + getHandshake().hashCode();
+          break;
+        case 2:
+          hash = (37 * hash) + PING_FIELD_NUMBER;
+          hash = (53 * hash) + getPing().hashCode();
+          break;
+        case 3:
+          hash = (37 * hash) + PONG_FIELD_NUMBER;
+          hash = (53 * hash) + getPong().hashCode();
+          break;
+        case 4:
+          hash = (37 * hash) + CANCELPINGS_FIELD_NUMBER;
+          hash = (53 * hash) + getCancelPings().hashCode();
+          break;
+        case 5:
+          hash = (37 * hash) + CANCELPONGS_FIELD_NUMBER;
+          hash = (53 * hash) + getCancelPongs().hashCode();
           break;
         case 0:
         default:
@@ -361,6 +613,18 @@ public final class General {
         if (handshakeBuilder_ != null) {
           handshakeBuilder_.clear();
         }
+        if (pingBuilder_ != null) {
+          pingBuilder_.clear();
+        }
+        if (pongBuilder_ != null) {
+          pongBuilder_.clear();
+        }
+        if (cancelPingsBuilder_ != null) {
+          cancelPingsBuilder_.clear();
+        }
+        if (cancelPongsBuilder_ != null) {
+          cancelPongsBuilder_.clear();
+        }
         payloadCase_ = 0;
         payload_ = null;
         return this;
@@ -406,6 +670,22 @@ public final class General {
             handshakeBuilder_ != null) {
           result.payload_ = handshakeBuilder_.build();
         }
+        if (payloadCase_ == 2 &&
+            pingBuilder_ != null) {
+          result.payload_ = pingBuilder_.build();
+        }
+        if (payloadCase_ == 3 &&
+            pongBuilder_ != null) {
+          result.payload_ = pongBuilder_.build();
+        }
+        if (payloadCase_ == 4 &&
+            cancelPingsBuilder_ != null) {
+          result.payload_ = cancelPingsBuilder_.build();
+        }
+        if (payloadCase_ == 5 &&
+            cancelPongsBuilder_ != null) {
+          result.payload_ = cancelPongsBuilder_.build();
+        }
       }
 
       @java.lang.Override
@@ -423,6 +703,22 @@ public final class General {
         switch (other.getPayloadCase()) {
           case HANDSHAKE: {
             mergeHandshake(other.getHandshake());
+            break;
+          }
+          case PING: {
+            mergePing(other.getPing());
+            break;
+          }
+          case PONG: {
+            mergePong(other.getPong());
+            break;
+          }
+          case CANCELPINGS: {
+            mergeCancelPings(other.getCancelPings());
+            break;
+          }
+          case CANCELPONGS: {
+            mergeCancelPongs(other.getCancelPongs());
             break;
           }
           case PAYLOAD_NOT_SET: {
@@ -462,6 +758,34 @@ public final class General {
                 payloadCase_ = 1;
                 break;
               } // case 10
+              case 18: {
+                input.readMessage(
+                    getPingFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                payloadCase_ = 2;
+                break;
+              } // case 18
+              case 26: {
+                input.readMessage(
+                    getPongFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                payloadCase_ = 3;
+                break;
+              } // case 26
+              case 34: {
+                input.readMessage(
+                    getCancelPingsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                payloadCase_ = 4;
+                break;
+              } // case 34
+              case 42: {
+                input.readMessage(
+                    getCancelPongsFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                payloadCase_ = 5;
+                break;
+              } // case 42
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -636,6 +960,574 @@ public final class General {
         return handshakeBuilder_;
       }
 
+      private com.google.protobuf.SingleFieldBuilder<
+          Ping.PingMessage, Ping.PingMessage.Builder, Ping.PingMessageOrBuilder> pingBuilder_;
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       * @return Whether the ping field is set.
+       */
+      @java.lang.Override
+      public boolean hasPing() {
+        return payloadCase_ == 2;
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       * @return The ping.
+       */
+      @java.lang.Override
+      public Ping.PingMessage getPing() {
+        if (pingBuilder_ == null) {
+          if (payloadCase_ == 2) {
+            return (Ping.PingMessage) payload_;
+          }
+          return Ping.PingMessage.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 2) {
+            return pingBuilder_.getMessage();
+          }
+          return Ping.PingMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       */
+      public Builder setPing(Ping.PingMessage value) {
+        if (pingBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          pingBuilder_.setMessage(value);
+        }
+        payloadCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       */
+      public Builder setPing(
+          Ping.PingMessage.Builder builderForValue) {
+        if (pingBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          pingBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       */
+      public Builder mergePing(Ping.PingMessage value) {
+        if (pingBuilder_ == null) {
+          if (payloadCase_ == 2 &&
+              payload_ != Ping.PingMessage.getDefaultInstance()) {
+            payload_ = Ping.PingMessage.newBuilder((Ping.PingMessage) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 2) {
+            pingBuilder_.mergeFrom(value);
+          } else {
+            pingBuilder_.setMessage(value);
+          }
+        }
+        payloadCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       */
+      public Builder clearPing() {
+        if (pingBuilder_ == null) {
+          if (payloadCase_ == 2) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 2) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          pingBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       */
+      public Ping.PingMessage.Builder getPingBuilder() {
+        return getPingFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       */
+      @java.lang.Override
+      public Ping.PingMessageOrBuilder getPingOrBuilder() {
+        if ((payloadCase_ == 2) && (pingBuilder_ != null)) {
+          return pingBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 2) {
+            return (Ping.PingMessage) payload_;
+          }
+          return Ping.PingMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.PingMessage ping = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          Ping.PingMessage, Ping.PingMessage.Builder, Ping.PingMessageOrBuilder> 
+          getPingFieldBuilder() {
+        if (pingBuilder_ == null) {
+          if (!(payloadCase_ == 2)) {
+            payload_ = Ping.PingMessage.getDefaultInstance();
+          }
+          pingBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              Ping.PingMessage, Ping.PingMessage.Builder, Ping.PingMessageOrBuilder>(
+                  (Ping.PingMessage) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 2;
+        onChanged();
+        return pingBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilder<
+          Pong.PongMessage, Pong.PongMessage.Builder, Pong.PongMessageOrBuilder> pongBuilder_;
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       * @return Whether the pong field is set.
+       */
+      @java.lang.Override
+      public boolean hasPong() {
+        return payloadCase_ == 3;
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       * @return The pong.
+       */
+      @java.lang.Override
+      public Pong.PongMessage getPong() {
+        if (pongBuilder_ == null) {
+          if (payloadCase_ == 3) {
+            return (Pong.PongMessage) payload_;
+          }
+          return Pong.PongMessage.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 3) {
+            return pongBuilder_.getMessage();
+          }
+          return Pong.PongMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       */
+      public Builder setPong(Pong.PongMessage value) {
+        if (pongBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          pongBuilder_.setMessage(value);
+        }
+        payloadCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       */
+      public Builder setPong(
+          Pong.PongMessage.Builder builderForValue) {
+        if (pongBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          pongBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       */
+      public Builder mergePong(Pong.PongMessage value) {
+        if (pongBuilder_ == null) {
+          if (payloadCase_ == 3 &&
+              payload_ != Pong.PongMessage.getDefaultInstance()) {
+            payload_ = Pong.PongMessage.newBuilder((Pong.PongMessage) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 3) {
+            pongBuilder_.mergeFrom(value);
+          } else {
+            pongBuilder_.setMessage(value);
+          }
+        }
+        payloadCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       */
+      public Builder clearPong() {
+        if (pongBuilder_ == null) {
+          if (payloadCase_ == 3) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 3) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          pongBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       */
+      public Pong.PongMessage.Builder getPongBuilder() {
+        return getPongFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       */
+      @java.lang.Override
+      public Pong.PongMessageOrBuilder getPongOrBuilder() {
+        if ((payloadCase_ == 3) && (pongBuilder_ != null)) {
+          return pongBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 3) {
+            return (Pong.PongMessage) payload_;
+          }
+          return Pong.PongMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.PongMessage pong = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          Pong.PongMessage, Pong.PongMessage.Builder, Pong.PongMessageOrBuilder> 
+          getPongFieldBuilder() {
+        if (pongBuilder_ == null) {
+          if (!(payloadCase_ == 3)) {
+            payload_ = Pong.PongMessage.getDefaultInstance();
+          }
+          pongBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              Pong.PongMessage, Pong.PongMessage.Builder, Pong.PongMessageOrBuilder>(
+                  (Pong.PongMessage) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 3;
+        onChanged();
+        return pongBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilder<
+          Ping.CancelPingsMessage, Ping.CancelPingsMessage.Builder, Ping.CancelPingsMessageOrBuilder> cancelPingsBuilder_;
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       * @return Whether the cancelPings field is set.
+       */
+      @java.lang.Override
+      public boolean hasCancelPings() {
+        return payloadCase_ == 4;
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       * @return The cancelPings.
+       */
+      @java.lang.Override
+      public Ping.CancelPingsMessage getCancelPings() {
+        if (cancelPingsBuilder_ == null) {
+          if (payloadCase_ == 4) {
+            return (Ping.CancelPingsMessage) payload_;
+          }
+          return Ping.CancelPingsMessage.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 4) {
+            return cancelPingsBuilder_.getMessage();
+          }
+          return Ping.CancelPingsMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       */
+      public Builder setCancelPings(Ping.CancelPingsMessage value) {
+        if (cancelPingsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          cancelPingsBuilder_.setMessage(value);
+        }
+        payloadCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       */
+      public Builder setCancelPings(
+          Ping.CancelPingsMessage.Builder builderForValue) {
+        if (cancelPingsBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          cancelPingsBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       */
+      public Builder mergeCancelPings(Ping.CancelPingsMessage value) {
+        if (cancelPingsBuilder_ == null) {
+          if (payloadCase_ == 4 &&
+              payload_ != Ping.CancelPingsMessage.getDefaultInstance()) {
+            payload_ = Ping.CancelPingsMessage.newBuilder((Ping.CancelPingsMessage) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 4) {
+            cancelPingsBuilder_.mergeFrom(value);
+          } else {
+            cancelPingsBuilder_.setMessage(value);
+          }
+        }
+        payloadCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       */
+      public Builder clearCancelPings() {
+        if (cancelPingsBuilder_ == null) {
+          if (payloadCase_ == 4) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 4) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          cancelPingsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       */
+      public Ping.CancelPingsMessage.Builder getCancelPingsBuilder() {
+        return getCancelPingsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       */
+      @java.lang.Override
+      public Ping.CancelPingsMessageOrBuilder getCancelPingsOrBuilder() {
+        if ((payloadCase_ == 4) && (cancelPingsBuilder_ != null)) {
+          return cancelPingsBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 4) {
+            return (Ping.CancelPingsMessage) payload_;
+          }
+          return Ping.CancelPingsMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.CancelPingsMessage cancelPings = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          Ping.CancelPingsMessage, Ping.CancelPingsMessage.Builder, Ping.CancelPingsMessageOrBuilder> 
+          getCancelPingsFieldBuilder() {
+        if (cancelPingsBuilder_ == null) {
+          if (!(payloadCase_ == 4)) {
+            payload_ = Ping.CancelPingsMessage.getDefaultInstance();
+          }
+          cancelPingsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              Ping.CancelPingsMessage, Ping.CancelPingsMessage.Builder, Ping.CancelPingsMessageOrBuilder>(
+                  (Ping.CancelPingsMessage) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 4;
+        onChanged();
+        return cancelPingsBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilder<
+          Pong.CancelPongsMessage, Pong.CancelPongsMessage.Builder, Pong.CancelPongsMessageOrBuilder> cancelPongsBuilder_;
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       * @return Whether the cancelPongs field is set.
+       */
+      @java.lang.Override
+      public boolean hasCancelPongs() {
+        return payloadCase_ == 5;
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       * @return The cancelPongs.
+       */
+      @java.lang.Override
+      public Pong.CancelPongsMessage getCancelPongs() {
+        if (cancelPongsBuilder_ == null) {
+          if (payloadCase_ == 5) {
+            return (Pong.CancelPongsMessage) payload_;
+          }
+          return Pong.CancelPongsMessage.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 5) {
+            return cancelPongsBuilder_.getMessage();
+          }
+          return Pong.CancelPongsMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       */
+      public Builder setCancelPongs(Pong.CancelPongsMessage value) {
+        if (cancelPongsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          cancelPongsBuilder_.setMessage(value);
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       */
+      public Builder setCancelPongs(
+          Pong.CancelPongsMessage.Builder builderForValue) {
+        if (cancelPongsBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          cancelPongsBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       */
+      public Builder mergeCancelPongs(Pong.CancelPongsMessage value) {
+        if (cancelPongsBuilder_ == null) {
+          if (payloadCase_ == 5 &&
+              payload_ != Pong.CancelPongsMessage.getDefaultInstance()) {
+            payload_ = Pong.CancelPongsMessage.newBuilder((Pong.CancelPongsMessage) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 5) {
+            cancelPongsBuilder_.mergeFrom(value);
+          } else {
+            cancelPongsBuilder_.setMessage(value);
+          }
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       */
+      public Builder clearCancelPongs() {
+        if (cancelPongsBuilder_ == null) {
+          if (payloadCase_ == 5) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 5) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          cancelPongsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       */
+      public Pong.CancelPongsMessage.Builder getCancelPongsBuilder() {
+        return getCancelPongsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       */
+      @java.lang.Override
+      public Pong.CancelPongsMessageOrBuilder getCancelPongsOrBuilder() {
+        if ((payloadCase_ == 5) && (cancelPongsBuilder_ != null)) {
+          return cancelPongsBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 5) {
+            return (Pong.CancelPongsMessage) payload_;
+          }
+          return Pong.CancelPongsMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.CancelPongsMessage cancelPongs = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          Pong.CancelPongsMessage, Pong.CancelPongsMessage.Builder, Pong.CancelPongsMessageOrBuilder> 
+          getCancelPongsFieldBuilder() {
+        if (cancelPongsBuilder_ == null) {
+          if (!(payloadCase_ == 5)) {
+            payload_ = Pong.CancelPongsMessage.getDefaultInstance();
+          }
+          cancelPongsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              Pong.CancelPongsMessage, Pong.CancelPongsMessage.Builder, Pong.CancelPongsMessageOrBuilder>(
+                  (Pong.CancelPongsMessage) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 5;
+        onChanged();
+        return cancelPongsBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:ProtobufMessage)
     }
 
@@ -702,23 +1594,32 @@ public final class General {
   static {
     java.lang.String[] descriptorData = {
       "\n\037src/main/protobuf/general.proto\032!src/m" +
-      "ain/protobuf/handshake.proto\"D\n\017Protobuf" +
-      "Message\022&\n\thandshake\030\001 \001(\0132\021.HandshakeMe" +
-      "ssageH\000B\t\n\007payloadb\006proto3"
+      "ain/protobuf/handshake.proto\032\034src/main/p" +
+      "rotobuf/ping.proto\032\034src/main/protobuf/po" +
+      "ng.proto\"\330\001\n\017ProtobufMessage\022&\n\thandshak" +
+      "e\030\001 \001(\0132\021.HandshakeMessageH\000\022\034\n\004ping\030\002 \001" +
+      "(\0132\014.PingMessageH\000\022\034\n\004pong\030\003 \001(\0132\014.PongM" +
+      "essageH\000\022*\n\013cancelPings\030\004 \001(\0132\023.CancelPi" +
+      "ngsMessageH\000\022*\n\013cancelPongs\030\005 \001(\0132\023.Canc" +
+      "elPongsMessageH\000B\t\n\007payloadb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           Handshake.getDescriptor(),
+          Ping.getDescriptor(),
+          Pong.getDescriptor(),
         });
     internal_static_ProtobufMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_ProtobufMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ProtobufMessage_descriptor,
-        new java.lang.String[] { "Handshake", "Payload", });
+        new java.lang.String[] { "Handshake", "Ping", "Pong", "CancelPings", "CancelPongs", "Payload", });
     descriptor.resolveAllFeaturesImmutable();
     Handshake.getDescriptor();
+    Ping.getDescriptor();
+    Pong.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
