@@ -1,7 +1,7 @@
 package com.halcyon.p2p.file.transfer.network;
 
 import com.halcyon.p2p.file.transfer.config.PeerConfig;
-import com.halcyon.p2p.file.transfer.proto.General;
+import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -28,7 +28,7 @@ public class PeerChannelInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
 
         pipeline.addLast(new ProtobufVarint32FrameDecoder());
-        pipeline.addLast(new ProtobufDecoder(General.ProtobufMessage.getDefaultInstance()));
+        pipeline.addLast(new ProtobufDecoder(ProtobufMessage.getDefaultInstance()));
         pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
         pipeline.addLast(new ProtobufEncoder());
 

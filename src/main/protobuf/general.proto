@@ -1,9 +1,15 @@
 syntax = "proto3";
 
 import "src/main/protobuf/handshake.proto";
+import "src/main/protobuf/ping.proto";
+import "src/main/protobuf/pong.proto";
 
 message ProtobufMessage {
   oneof payload {
     HandshakeMessage handshake = 1;
+    PingMessage ping = 2;
+    PongMessage pong = 3;
+    CancelPingsMessage cancelPings = 4;
+    CancelPongsMessage cancelPongs = 5;
   }
 }

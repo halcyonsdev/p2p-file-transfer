@@ -17,6 +17,7 @@ import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.concurrent.*;
 
 public class PeerService {
@@ -30,16 +31,19 @@ public class PeerService {
     private final EventLoopGroup networkEventLoopGroup = new NioEventLoopGroup(6);
     private final EventLoopGroup peerEventLoopGroup = new NioEventLoopGroup(1);
 
+    private Future<?> timeoutPingsFuture;
+
     public PeerService(PeerConfig peerConfig, int portToBind) {
         this.peerConfig = peerConfig;
         this.portToBind = portToBind;
 
         ConnectionService connectionService = new ConnectionService(peerConfig, networkEventLoopGroup, peerEventLoopGroup);
+        PingPongService pingPongService = new PingPongService(connectionService, peerConfig);
 
-        this.peer = new Peer(peerConfig, connectionService);
+        this.peer = new Peer(peerConfig, connectionService, pingPongService);
     }
 
-    public ChannelFuture start() throws InterruptedException {
+    public void start() throws InterruptedException {
         PeerChannelHandler peerChannelHandler = new PeerChannelHandler(peer);
         PeerChannelInitializer peerChannelInitializer = new PeerChannelInitializer(peerConfig, peerEventLoopGroup, peerChannelHandler);
 
@@ -53,11 +57,12 @@ public class PeerService {
                 .childHandler(peerChannelInitializer);
 
         ChannelFuture bindFuture = serverBootstrap.bind(portToBind).sync();
-        return bindServerChannel(bindFuture);
+        bindServerChannel(bindFuture);
+
+        this.timeoutPingsFuture = peerEventLoopGroup.scheduleAtFixedRate(peer::timeoutPings, 0, 100, TimeUnit.MILLISECONDS);
     }
 
-    private ChannelFuture bindServerChannel(ChannelFuture bindFuture) {
-        ChannelFuture closeFuture = null;
+    private void bindServerChannel(ChannelFuture bindFuture) {
         if (bindFuture.isSuccess()) {
             LOGGER.info("{} successfully bound to {}", peerConfig.getPeerName(), portToBind);
 
@@ -74,14 +79,11 @@ public class PeerService {
             });
 
             handleChannelBinding(setServerChannelFuture);
-            closeFuture = serverChannel.closeFuture();
 
         } else {
             LOGGER.error("{} couldn't bind to {}", peerConfig.getPeerName(), portToBind, bindFuture.cause());
             System.exit(-1);
         }
-
-        return closeFuture;
     }
 
     private void handleChannelBinding(SettableFuture<Void> setServerChannelFuture) {
@@ -112,10 +114,21 @@ public class PeerService {
         CompletableFuture<Void> future = new CompletableFuture<>();
         peerEventLoopGroup.execute(() -> peer.leave(future));
 
+        if (timeoutPingsFuture != null) {
+            timeoutPingsFuture.cancel(false);
+            timeoutPingsFuture = null;
+        }
+
         return future;
     }
 
     public void disconnect(String peerName) {
         peerEventLoopGroup.execute(() -> peer.disconnect(peerName));
+    }
+
+    public CompletableFuture<Collection<String>> ping() {
+        CompletableFuture<Collection<String>> future = new CompletableFuture<>();
+        peerEventLoopGroup.execute(() -> peer.ping(future));
+        return future;
     }
 }

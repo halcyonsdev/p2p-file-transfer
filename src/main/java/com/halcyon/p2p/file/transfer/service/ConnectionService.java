@@ -27,7 +27,7 @@ public class ConnectionService {
     private final EventLoopGroup networkEventLoopGroup;
     private final EventLoopGroup peerEventLoopGroup;
 
-    private final Map<String, Connection> connections = new HashMap<>();
+    private final Map<String, Connection> serverNameToConnectionMap = new HashMap<>();
 
     public ConnectionService(PeerConfig peerConfig, EventLoopGroup networkEventLoopGroup, EventLoopGroup peerEventLoopGroup) {
         this.peerConfig = peerConfig;
@@ -60,9 +60,9 @@ public class ConnectionService {
 
     public void addConnection(Connection connection) {
         String peerName = connection.getPeerName();
-        Connection previousConnection = connections.put(peerName, connection);
+        Connection previousConnection = serverNameToConnectionMap.put(peerName, connection);
 
-        LOGGER.info("Connection {} is added", peerName);
+        LOGGER.info("Connection to {} is added", peerName);
 
         if (previousConnection != null) {
             previousConnection.close();
@@ -71,12 +71,12 @@ public class ConnectionService {
     }
 
     public Connection getConnection(String peerName) {
-        return connections.get(peerName);
+        return serverNameToConnectionMap.get(peerName);
     }
 
     public boolean removeConnection(Connection connection) {
         String peerName = connection.getPeerName();
-        boolean removed = connections.remove(peerName) != null;
+        boolean removed = serverNameToConnectionMap.remove(peerName) != null;
 
         if (removed) {
             LOGGER.info("{} is removed from connections", connection);
@@ -87,15 +87,19 @@ public class ConnectionService {
         return removed;
     }
 
+    public Collection<Connection> getConnections() {
+        return Collections.unmodifiableCollection(serverNameToConnectionMap.values());
+    }
+
     public int getNumberOfConnections() {
-        return connections.size();
+        return serverNameToConnectionMap.size();
     }
 
     public boolean hasConnection(String peerName) {
-        return connections.containsKey(peerName);
+        return serverNameToConnectionMap.containsKey(peerName);
     }
 
-    public Collection<Connection> getConnections() {
-        return Collections.unmodifiableCollection(connections.values());
+    public Collection<Connection> getServerNameToConnectionMap() {
+        return Collections.unmodifiableCollection(serverNameToConnectionMap.values());
     }
 }

@@ -1,24 +1,37 @@
 package com.halcyon.p2p.file.transfer.network;
 
 import com.halcyon.p2p.file.transfer.config.PeerConfig;
+import com.halcyon.p2p.file.transfer.proto.Ping.PingMessage;
+
+import com.halcyon.p2p.file.transfer.proto.Pong.PongMessage;
 import com.halcyon.p2p.file.transfer.service.ConnectionService;
+import com.halcyon.p2p.file.transfer.service.PingPongService;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import static java.lang.Math.min;
 
 public class Peer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Peer.class);
 
     private final PeerConfig peerConfig;
     private final ConnectionService connectionService;
+    private final PingPongService pingPongService;
     private Channel bindChannel;
     private boolean running = true;
 
-    public Peer(PeerConfig peerConfig, ConnectionService connectionService) {
+    public Peer(PeerConfig peerConfig, ConnectionService connectionService, PingPongService pingPongService) {
         this.peerConfig = peerConfig;
         this.connectionService = connectionService;
+        this.pingPongService = pingPongService;
     }
 
     public void handleConnectionOpening(Connection connection) {
@@ -52,7 +65,7 @@ public class Peer {
 
     public void connectTo(String host, int port, CompletableFuture<Void> futureToNotify) {
         if (isDisabled()) {
-            futureToNotify.completeExceptionally(new RuntimeException("Peer is disabled"));
+            futureToNotify.completeExceptionally(new RuntimeException("The peer is disabled"));
         } else {
             connectionService.connect(this, host, port, futureToNotify);
         }
@@ -72,7 +85,7 @@ public class Peer {
             }
         });
 
-        for (Connection connection : connectionService.getConnections()) {
+        for (Connection connection : connectionService.getServerNameToConnectionMap()) {
             connection.close();
         }
 
@@ -92,6 +105,67 @@ public class Peer {
             connection.close();
         } else {
             LOGGER.warn("This peer {} is not connected to {}", peerConfig.getPeerName(), peerName);
+        }
+    }
+
+    public void ping(CompletableFuture<Collection<String>> futureToNotify) {
+        if (isDisabled()) {
+            futureToNotify.completeExceptionally(new RuntimeException("The peer is disabled"));
+        } else {
+            pingPongService.ping(futureToNotify);
+        }
+    }
+
+    public void handlePing(Connection connection, PingMessage ping) {
+        if (isDisabled()) {
+            LOGGER.warn("Ping of {} is ignored because the peer is disabled", connection.getPeerName());
+        } else {
+            pingPongService.handlePing((InetSocketAddress) bindChannel.localAddress(), connection, ping);
+        }
+    }
+
+    public void handlePong(Connection connection, PongMessage pong) {
+        if (isDisabled()) {
+            LOGGER.warn("Pong of {} is ignored because the peer is disabled", connection.getPeerName());
+        } else {
+            pingPongService.handlePong(pong);
+        }
+    }
+
+    public void timeoutPings() {
+        if (isDisabled()) {
+            LOGGER.warn("Timeout pings are ignored because the peer is disabled");
+            return;
+        }
+
+        Collection<PongMessage> pongs = pingPongService.timeoutPings();
+        int availableConnectionSlots = peerConfig.getMinNumberOfActiveConnections() - connectionService.getNumberOfConnections();
+
+        if (availableConnectionSlots > 0) {
+            List<PongMessage> notConnectedPeers = new ArrayList<>();
+
+            for (PongMessage pong : pongs) {
+                if (!peerConfig.getPeerName().equals(pong.getPingPeerName()) && !connectionService.hasConnection(pong.getPeerName())) {
+                    notConnectedPeers.add(pong);
+                }
+            }
+
+            autoConnectToPeers(notConnectedPeers);
+        }
+    }
+
+    private void autoConnectToPeers(List<PongMessage> notConnectedPeers) {
+        int availableConnectionSlots = peerConfig.getMinNumberOfActiveConnections() - connectionService.getNumberOfConnections();
+        Collections.shuffle(notConnectedPeers);
+
+        for (int i = 0; i < min(availableConnectionSlots, notConnectedPeers.size()); i++) {
+            PongMessage peerToConnect = notConnectedPeers.get(i);
+            String host = peerToConnect.getServerHost();
+            int port = peerToConnect.getServerPort();
+
+            LOGGER.info("Auto-connecting to {} via {}:{}", peerToConnect.getPeerName(), host, port);
+
+            connectTo(host, port, null);
         }
     }
 

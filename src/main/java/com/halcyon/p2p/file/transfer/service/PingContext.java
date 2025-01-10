@@ -1,5 +1,6 @@
-package com.halcyon.p2p.file.transfer.network;
+package com.halcyon.p2p.file.transfer.service;
 
+import com.halcyon.p2p.file.transfer.network.Connection;
 import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
 import com.halcyon.p2p.file.transfer.proto.Ping.PingMessage;
 import com.halcyon.p2p.file.transfer.proto.Pong.PongMessage;
@@ -25,17 +26,17 @@ public class PingContext {
         this.connection = connection;
     }
 
-    public boolean handlePong(String serverName, PongMessage pong) {
+    public void handlePong(String serverName, PongMessage pong) {
         String pingServerName = ping.getPeerName();
         String pongServerName = pong.getPeerName();
 
         if (serverNameToPongMap.containsKey(pongServerName)) {
-            LOGGER.info("{} from {} is already handled in {}", pong, pongServerName, pingServerName);
-            return false;
+            LOGGER.info("Pong from {} is already handled in {}", pongServerName, pingServerName);
+            return;
         }
 
         serverNameToPongMap.put(pongServerName, pong);
-        LOGGER.info("Handling {} №{} from {} in {}", pong, serverNameToPongMap.size(), pongServerName, pingServerName);
+        LOGGER.info("Handling pong №{} from {} in {}", serverNameToPongMap.size(), pongServerName, pingServerName);
 
         if (!pingServerName.equals(serverName)) {
             if (connection != null) {
@@ -44,15 +45,13 @@ public class PingContext {
                 LOGGER.error("No connection found in the {} ping context for {} from {}", ping.getPeerName(), pong, pongServerName);
             }
         }
-
-        return true;
     }
 
     private void determineNextPong(String serverName, PongMessage pong) {
         Optional<PongMessage> pongOptional = nextPong(pong, serverName);
 
         if (pongOptional.isPresent()) {
-            LOGGER.info("Forwarding {} from {} for initiator {}", pong, connection.getPeerName(), ping.getPeerName());
+            LOGGER.info("Forwarding pong from {} for initiator {}", connection.getPeerName(), ping.getPeerName());
 
             var protobufMessage = ProtobufMessage.newBuilder()
                     .setPong(pongOptional.get())
@@ -60,7 +59,7 @@ public class PingContext {
 
             connection.send(protobufMessage);
         } else {
-            LOGGER.error("Invalid {} received from {} for {}", pong, pong.getPeerName(), ping.getPeerName());
+            LOGGER.error("Invalid pong received from {} for {}", pong.getPeerName(), ping.getPeerName());
         }
     }
 
@@ -74,6 +73,10 @@ public class PingContext {
 
     public boolean isTimeout() {
         return ping.getPingStartTimestamp() + ping.getPingTimeoutDurationInMillis() <= System.currentTimeMillis();
+    }
+
+    public Collection<PongMessage> getPongs() {
+        return Collections.unmodifiableCollection(serverNameToPongMap.values());
     }
 
     public List<CompletableFuture<Collection<String>>> getFutures() {

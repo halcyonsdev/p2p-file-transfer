@@ -1,8 +1,7 @@
 package com.halcyon.p2p.file.transfer.network;
 
 import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
-import com.halcyon.p2p.file.transfer.proto.Handshake;
-import com.halcyon.p2p.file.transfer.util.ProtobufMessageUtil;
+import com.halcyon.p2p.file.transfer.proto.Handshake.HandshakeMessage;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -13,9 +12,12 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.halcyon.p2p.file.transfer.util.ProtobufMessageUtil.*;
+
 @ChannelHandler.Sharable
 public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMessage> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeerChannelHandler.class);
+
     private static final String SESSION_ATTRIBUTE_KEY = "session";
     private final Peer peer;
 
@@ -32,7 +34,11 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
         Connection connection = getSessionConnection(ctx).get();
 
         if (message.hasHandshake()) {
-            ProtobufMessageUtil.handleHandshake(peer, connection, message.getHandshake());
+            handleHandshake(peer, connection, message.getHandshake());
+        } else if (message.hasPing()) {
+            handlePing(peer, connection, message.getPing());
+        } else if (message.hasPong()) {
+            handlePong(peer, connection, message.getPong());
         }
     }
 
@@ -43,7 +49,7 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
         Connection connection = new Connection(ctx);
         getSessionConnection(ctx).set(connection);
 
-        var handshakeMessage = Handshake.HandshakeMessage.newBuilder()
+        var handshakeMessage = HandshakeMessage.newBuilder()
                 .setSenderPeerName(peer.getPeerName())
                 .build();
 

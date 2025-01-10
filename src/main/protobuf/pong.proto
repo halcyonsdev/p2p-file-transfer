@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message PongMessage {
+  string pingPeerName = 1;
+  string senderPeerName = 2;
+  string peerName = 3;
+  string serverHost = 4;
+  int32 serverPort = 5;
+  int32 ttl = 6;
+  int32 hops = 7;
+}
+
+message CancelPongsMessage {
+  string peerName = 1;
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message PingMessage {
+  string peerName = 1;
+  int32 ttl = 2;
+  int32 hops = 3;
+  int64 pingTimeoutDurationInMillis = 4;
+  int64 pingStartTimestamp = 5;
+}
+
+message CancelPingsMessage {
+  string peerName = 1;
+}
