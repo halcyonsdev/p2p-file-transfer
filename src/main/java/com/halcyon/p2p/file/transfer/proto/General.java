@@ -104,6 +104,21 @@ public final class General {
      */
     Pong.CancelPongsMessageOrBuilder getCancelPongsOrBuilder();
 
+    /**
+     * <code>.KeepAliveMessage keepAlive = 6;</code>
+     * @return Whether the keepAlive field is set.
+     */
+    boolean hasKeepAlive();
+    /**
+     * <code>.KeepAliveMessage keepAlive = 6;</code>
+     * @return The keepAlive.
+     */
+    KeepAlive.KeepAliveMessage getKeepAlive();
+    /**
+     * <code>.KeepAliveMessage keepAlive = 6;</code>
+     */
+    KeepAlive.KeepAliveMessageOrBuilder getKeepAliveOrBuilder();
+
     General.ProtobufMessage.PayloadCase getPayloadCase();
   }
   /**
@@ -154,6 +169,7 @@ public final class General {
       PONG(3),
       CANCELPINGS(4),
       CANCELPONGS(5),
+      KEEPALIVE(6),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -176,6 +192,7 @@ public final class General {
           case 3: return PONG;
           case 4: return CANCELPINGS;
           case 5: return CANCELPONGS;
+          case 6: return KEEPALIVE;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -346,6 +363,37 @@ public final class General {
       return Pong.CancelPongsMessage.getDefaultInstance();
     }
 
+    public static final int KEEPALIVE_FIELD_NUMBER = 6;
+    /**
+     * <code>.KeepAliveMessage keepAlive = 6;</code>
+     * @return Whether the keepAlive field is set.
+     */
+    @java.lang.Override
+    public boolean hasKeepAlive() {
+      return payloadCase_ == 6;
+    }
+    /**
+     * <code>.KeepAliveMessage keepAlive = 6;</code>
+     * @return The keepAlive.
+     */
+    @java.lang.Override
+    public KeepAlive.KeepAliveMessage getKeepAlive() {
+      if (payloadCase_ == 6) {
+         return (KeepAlive.KeepAliveMessage) payload_;
+      }
+      return KeepAlive.KeepAliveMessage.getDefaultInstance();
+    }
+    /**
+     * <code>.KeepAliveMessage keepAlive = 6;</code>
+     */
+    @java.lang.Override
+    public KeepAlive.KeepAliveMessageOrBuilder getKeepAliveOrBuilder() {
+      if (payloadCase_ == 6) {
+         return (KeepAlive.KeepAliveMessage) payload_;
+      }
+      return KeepAlive.KeepAliveMessage.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -375,6 +423,9 @@ public final class General {
       if (payloadCase_ == 5) {
         output.writeMessage(5, (Pong.CancelPongsMessage) payload_);
       }
+      if (payloadCase_ == 6) {
+        output.writeMessage(6, (KeepAlive.KeepAliveMessage) payload_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -403,6 +454,10 @@ public final class General {
       if (payloadCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, (Pong.CancelPongsMessage) payload_);
+      }
+      if (payloadCase_ == 6) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, (KeepAlive.KeepAliveMessage) payload_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -441,6 +496,10 @@ public final class General {
           if (!getCancelPongs()
               .equals(other.getCancelPongs())) return false;
           break;
+        case 6:
+          if (!getKeepAlive()
+              .equals(other.getKeepAlive())) return false;
+          break;
         case 0:
         default:
       }
@@ -475,6 +534,10 @@ public final class General {
         case 5:
           hash = (37 * hash) + CANCELPONGS_FIELD_NUMBER;
           hash = (53 * hash) + getCancelPongs().hashCode();
+          break;
+        case 6:
+          hash = (37 * hash) + KEEPALIVE_FIELD_NUMBER;
+          hash = (53 * hash) + getKeepAlive().hashCode();
           break;
         case 0:
         default:
@@ -625,6 +688,9 @@ public final class General {
         if (cancelPongsBuilder_ != null) {
           cancelPongsBuilder_.clear();
         }
+        if (keepAliveBuilder_ != null) {
+          keepAliveBuilder_.clear();
+        }
         payloadCase_ = 0;
         payload_ = null;
         return this;
@@ -686,6 +752,10 @@ public final class General {
             cancelPongsBuilder_ != null) {
           result.payload_ = cancelPongsBuilder_.build();
         }
+        if (payloadCase_ == 6 &&
+            keepAliveBuilder_ != null) {
+          result.payload_ = keepAliveBuilder_.build();
+        }
       }
 
       @java.lang.Override
@@ -719,6 +789,10 @@ public final class General {
           }
           case CANCELPONGS: {
             mergeCancelPongs(other.getCancelPongs());
+            break;
+          }
+          case KEEPALIVE: {
+            mergeKeepAlive(other.getKeepAlive());
             break;
           }
           case PAYLOAD_NOT_SET: {
@@ -786,6 +860,13 @@ public final class General {
                 payloadCase_ = 5;
                 break;
               } // case 42
+              case 50: {
+                input.readMessage(
+                    getKeepAliveFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                payloadCase_ = 6;
+                break;
+              } // case 50
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1528,6 +1609,148 @@ public final class General {
         return cancelPongsBuilder_;
       }
 
+      private com.google.protobuf.SingleFieldBuilder<
+          KeepAlive.KeepAliveMessage, KeepAlive.KeepAliveMessage.Builder, KeepAlive.KeepAliveMessageOrBuilder> keepAliveBuilder_;
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       * @return Whether the keepAlive field is set.
+       */
+      @java.lang.Override
+      public boolean hasKeepAlive() {
+        return payloadCase_ == 6;
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       * @return The keepAlive.
+       */
+      @java.lang.Override
+      public KeepAlive.KeepAliveMessage getKeepAlive() {
+        if (keepAliveBuilder_ == null) {
+          if (payloadCase_ == 6) {
+            return (KeepAlive.KeepAliveMessage) payload_;
+          }
+          return KeepAlive.KeepAliveMessage.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 6) {
+            return keepAliveBuilder_.getMessage();
+          }
+          return KeepAlive.KeepAliveMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       */
+      public Builder setKeepAlive(KeepAlive.KeepAliveMessage value) {
+        if (keepAliveBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          keepAliveBuilder_.setMessage(value);
+        }
+        payloadCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       */
+      public Builder setKeepAlive(
+          KeepAlive.KeepAliveMessage.Builder builderForValue) {
+        if (keepAliveBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          keepAliveBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       */
+      public Builder mergeKeepAlive(KeepAlive.KeepAliveMessage value) {
+        if (keepAliveBuilder_ == null) {
+          if (payloadCase_ == 6 &&
+              payload_ != KeepAlive.KeepAliveMessage.getDefaultInstance()) {
+            payload_ = KeepAlive.KeepAliveMessage.newBuilder((KeepAlive.KeepAliveMessage) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 6) {
+            keepAliveBuilder_.mergeFrom(value);
+          } else {
+            keepAliveBuilder_.setMessage(value);
+          }
+        }
+        payloadCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       */
+      public Builder clearKeepAlive() {
+        if (keepAliveBuilder_ == null) {
+          if (payloadCase_ == 6) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 6) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          keepAliveBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       */
+      public KeepAlive.KeepAliveMessage.Builder getKeepAliveBuilder() {
+        return getKeepAliveFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       */
+      @java.lang.Override
+      public KeepAlive.KeepAliveMessageOrBuilder getKeepAliveOrBuilder() {
+        if ((payloadCase_ == 6) && (keepAliveBuilder_ != null)) {
+          return keepAliveBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 6) {
+            return (KeepAlive.KeepAliveMessage) payload_;
+          }
+          return KeepAlive.KeepAliveMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.KeepAliveMessage keepAlive = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          KeepAlive.KeepAliveMessage, KeepAlive.KeepAliveMessage.Builder, KeepAlive.KeepAliveMessageOrBuilder> 
+          getKeepAliveFieldBuilder() {
+        if (keepAliveBuilder_ == null) {
+          if (!(payloadCase_ == 6)) {
+            payload_ = KeepAlive.KeepAliveMessage.getDefaultInstance();
+          }
+          keepAliveBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              KeepAlive.KeepAliveMessage, KeepAlive.KeepAliveMessage.Builder, KeepAlive.KeepAliveMessageOrBuilder>(
+                  (KeepAlive.KeepAliveMessage) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 6;
+        onChanged();
+        return keepAliveBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:ProtobufMessage)
     }
 
@@ -1596,12 +1819,14 @@ public final class General {
       "\n\037src/main/protobuf/general.proto\032!src/m" +
       "ain/protobuf/handshake.proto\032\034src/main/p" +
       "rotobuf/ping.proto\032\034src/main/protobuf/po" +
-      "ng.proto\"\330\001\n\017ProtobufMessage\022&\n\thandshak" +
-      "e\030\001 \001(\0132\021.HandshakeMessageH\000\022\034\n\004ping\030\002 \001" +
-      "(\0132\014.PingMessageH\000\022\034\n\004pong\030\003 \001(\0132\014.PongM" +
-      "essageH\000\022*\n\013cancelPings\030\004 \001(\0132\023.CancelPi" +
-      "ngsMessageH\000\022*\n\013cancelPongs\030\005 \001(\0132\023.Canc" +
-      "elPongsMessageH\000B\t\n\007payloadb\006proto3"
+      "ng.proto\032\"src/main/protobuf/keep_alive.p" +
+      "roto\"\200\002\n\017ProtobufMessage\022&\n\thandshake\030\001 " +
+      "\001(\0132\021.HandshakeMessageH\000\022\034\n\004ping\030\002 \001(\0132\014" +
+      ".PingMessageH\000\022\034\n\004pong\030\003 \001(\0132\014.PongMessa" +
+      "geH\000\022*\n\013cancelPings\030\004 \001(\0132\023.CancelPingsM" +
+      "essageH\000\022*\n\013cancelPongs\030\005 \001(\0132\023.CancelPo" +
+      "ngsMessageH\000\022&\n\tkeepAlive\030\006 \001(\0132\021.KeepAl" +
+      "iveMessageH\000B\t\n\007payloadb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1609,17 +1834,19 @@ public final class General {
           Handshake.getDescriptor(),
           Ping.getDescriptor(),
           Pong.getDescriptor(),
+          KeepAlive.getDescriptor(),
         });
     internal_static_ProtobufMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_ProtobufMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ProtobufMessage_descriptor,
-        new java.lang.String[] { "Handshake", "Ping", "Pong", "CancelPings", "CancelPongs", "Payload", });
+        new java.lang.String[] { "Handshake", "Ping", "Pong", "CancelPings", "CancelPongs", "KeepAlive", "Payload", });
     descriptor.resolveAllFeaturesImmutable();
     Handshake.getDescriptor();
     Ping.getDescriptor();
     Pong.getDescriptor();
+    KeepAlive.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

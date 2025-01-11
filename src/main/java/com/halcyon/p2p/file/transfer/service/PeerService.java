@@ -31,6 +31,7 @@ public class PeerService {
     private final EventLoopGroup networkEventLoopGroup = new NioEventLoopGroup(6);
     private final EventLoopGroup peerEventLoopGroup = new NioEventLoopGroup(1);
 
+    private Future<?> keepAliveFuture;
     private Future<?> timeoutPingsFuture;
 
     public PeerService(PeerConfig peerConfig, int portToBind) {
@@ -59,6 +60,9 @@ public class PeerService {
         ChannelFuture bindFuture = serverBootstrap.bind(portToBind).sync();
         bindServerChannel(bindFuture);
 
+        int initialDelay = Peer.RANDOM.nextInt(peerConfig.getKeepAlivePeriodSeconds());
+
+        this.keepAliveFuture = peerEventLoopGroup.scheduleAtFixedRate(peer::keepAlivePing, initialDelay, peerConfig.getKeepAlivePeriodSeconds(), TimeUnit.SECONDS);
         this.timeoutPingsFuture = peerEventLoopGroup.scheduleAtFixedRate(peer::timeoutPings, 0, 100, TimeUnit.MILLISECONDS);
     }
 
@@ -110,20 +114,23 @@ public class PeerService {
         return connectToHostFuture;
     }
 
+    public void disconnect(String peerName) {
+        peerEventLoopGroup.execute(() -> peer.disconnect(peerName));
+    }
+
     public CompletableFuture<Void> leave() {
         CompletableFuture<Void> future = new CompletableFuture<>();
         peerEventLoopGroup.execute(() -> peer.leave(future));
 
-        if (timeoutPingsFuture != null) {
+        if (keepAliveFuture != null && timeoutPingsFuture != null) {
+            keepAliveFuture.cancel(false);
+            keepAliveFuture = null;
+
             timeoutPingsFuture.cancel(false);
             timeoutPingsFuture = null;
         }
 
         return future;
-    }
-
-    public void disconnect(String peerName) {
-        peerEventLoopGroup.execute(() -> peer.disconnect(peerName));
     }
 
     public CompletableFuture<Collection<String>> ping() {

@@ -6,13 +6,17 @@ public class PeerConfig {
     public static final int DEFAULT_MAX_READ_IDLE_SECONDS = 120;
     public static final int DEFAULT_PING_TIMEOUT_SECONDS = 5;
     public static final int DEFAULT_PING_TTL = 7;
-    public static final int DEFAULT_MIN_NUMBER_OF_ACTIVE_CONNECTIONS = 5;
+    public static final int DEFAULT_MAX_NUMBER_OF_ACTIVE_CONNECTIONS = 5;
+    public static final int DEFAULT_AUTO_DISCOVERY_PING_FREQUENCY = 10;
+    public static final int DEFAULT_KEEP_ALIVE_SECONDS = 15;
 
     private String peerName;
     private int maxReadIdleSeconds = DEFAULT_MAX_READ_IDLE_SECONDS;
     private int pingTimeoutSeconds = DEFAULT_PING_TIMEOUT_SECONDS;
     private int pingTtl = DEFAULT_PING_TTL;
-    private int minNumberOfActiveConnections = DEFAULT_MIN_NUMBER_OF_ACTIVE_CONNECTIONS;
+    private int maxNumberOfActiveConnections = DEFAULT_MAX_NUMBER_OF_ACTIVE_CONNECTIONS;
+    private int autoDiscoveryPingFrequency = DEFAULT_AUTO_DISCOVERY_PING_FREQUENCY;
+    private int keepAlivePeriodSeconds = DEFAULT_KEEP_ALIVE_SECONDS;
 
     public PeerConfig(String peerName) {
         this.peerName = peerName;
@@ -50,12 +54,28 @@ public class PeerConfig {
         this.pingTtl = pingTtl;
     }
 
-    public int getMinNumberOfActiveConnections() {
-        return minNumberOfActiveConnections;
+    public int getMaxNumberOfActiveConnections() {
+        return maxNumberOfActiveConnections;
     }
 
-    public void setMinNumberOfActiveConnections(int minNumberOfActiveConnections) {
-        this.minNumberOfActiveConnections = minNumberOfActiveConnections;
+    public void setMaxNumberOfActiveConnections(int maxNumberOfActiveConnections) {
+        this.maxNumberOfActiveConnections = maxNumberOfActiveConnections;
+    }
+
+    public int getAutoDiscoveryPingFrequency() {
+        return autoDiscoveryPingFrequency;
+    }
+
+    public void setAutoDiscoveryPingFrequency(int autoDiscoveryPingFrequency) {
+        this.autoDiscoveryPingFrequency = autoDiscoveryPingFrequency;
+    }
+
+    public int getKeepAlivePeriodSeconds() {
+        return keepAlivePeriodSeconds;
+    }
+
+    public void setKeepAlivePeriodSeconds(int keepAlivePeriodSeconds) {
+        this.keepAlivePeriodSeconds = keepAlivePeriodSeconds;
     }
 
     @Override

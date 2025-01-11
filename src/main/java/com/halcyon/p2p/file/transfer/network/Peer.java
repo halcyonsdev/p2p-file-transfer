@@ -11,16 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static java.lang.Math.min;
 
 public class Peer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Peer.class);
+
+    public static final Random RANDOM = new Random();
 
     private final PeerConfig peerConfig;
     private final ConnectionService connectionService;
@@ -99,7 +98,7 @@ public class Peer {
             return;
         }
 
-        Connection connection = connectionService.getConnection(peerName);
+        Connection connection = connectionService.removeConnection(peerName);
         if (connection != null) {
             LOGGER.info("Disconnecting this peer {} from {}", peerConfig.getPeerName(), peerName);
             connection.close();
@@ -139,7 +138,7 @@ public class Peer {
         }
 
         Collection<PongMessage> pongs = pingPongService.timeoutPings();
-        int availableConnectionSlots = peerConfig.getMinNumberOfActiveConnections() - connectionService.getNumberOfConnections();
+        int availableConnectionSlots = peerConfig.getMaxNumberOfActiveConnections() - connectionService.getNumberOfConnections();
 
         if (availableConnectionSlots > 0) {
             List<PongMessage> notConnectedPeers = new ArrayList<>();
@@ -155,7 +154,7 @@ public class Peer {
     }
 
     private void autoConnectToPeers(List<PongMessage> notConnectedPeers) {
-        int availableConnectionSlots = peerConfig.getMinNumberOfActiveConnections() - connectionService.getNumberOfConnections();
+        int availableConnectionSlots = peerConfig.getMaxNumberOfActiveConnections() - connectionService.getNumberOfConnections();
         Collections.shuffle(notConnectedPeers);
 
         for (int i = 0; i < min(availableConnectionSlots, notConnectedPeers.size()); i++) {
@@ -166,6 +165,22 @@ public class Peer {
             LOGGER.info("Auto-connecting to {} via {}:{}", peerToConnect.getPeerName(), host, port);
 
             connectTo(host, port, null);
+        }
+    }
+
+    public void keepAlivePing() {
+        if (isDisabled()) {
+            LOGGER.warn("Periodic ping is ignored because the peer is disabled");
+            return;
+        }
+
+        int numberOfConnections = connectionService.getNumberOfConnections();
+
+        if (numberOfConnections > 0) {
+            boolean discoveryPingEnabled = numberOfConnections < peerConfig.getMaxNumberOfActiveConnections();
+            pingPongService.keepAlive(discoveryPingEnabled);
+        } else {
+            LOGGER.info("The auto ping wasn't started because there are no connections");
         }
     }
 

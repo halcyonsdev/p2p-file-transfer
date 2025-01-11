@@ -31,4 +31,8 @@ public class ProtobufMessageUtil {
     public static void handlePong(Peer peer, Connection connection, PongMessage pong) {
         peer.handlePong(connection, pong);
     }
+
+    public static void handleKeepAlive(Connection connection) {
+        LOGGER.info("Keep alive ping received from {}", connection);
+    }
 }

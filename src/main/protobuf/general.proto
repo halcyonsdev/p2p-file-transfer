@@ -3,6 +3,7 @@ syntax = "proto3";
 import "src/main/protobuf/handshake.proto";
 import "src/main/protobuf/ping.proto";
 import "src/main/protobuf/pong.proto";
+import "src/main/protobuf/keep_alive.proto";
 
 message ProtobufMessage {
   oneof payload {
@@ -11,5 +12,6 @@ message ProtobufMessage {
     PongMessage pong = 3;
     CancelPingsMessage cancelPings = 4;
     CancelPongsMessage cancelPongs = 5;
+    KeepAliveMessage keepAlive = 6;
   }
 }

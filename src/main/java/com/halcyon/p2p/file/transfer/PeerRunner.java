@@ -2,7 +2,6 @@ package com.halcyon.p2p.file.transfer;
 
 import com.halcyon.p2p.file.transfer.config.PeerConfig;
 import com.halcyon.p2p.file.transfer.service.PeerService;
-import io.netty.channel.ChannelFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

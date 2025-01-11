@@ -3,6 +3,7 @@ package com.halcyon.p2p.file.transfer.service;
 import com.halcyon.p2p.file.transfer.config.PeerConfig;
 import com.halcyon.p2p.file.transfer.network.Connection;
 import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
+import com.halcyon.p2p.file.transfer.proto.KeepAlive.KeepAliveMessage;
 import com.halcyon.p2p.file.transfer.proto.Ping.PingMessage;
 import com.halcyon.p2p.file.transfer.proto.Pong.PongMessage;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ public class PingPongService {
     private final ConnectionService connectionService;
     private final PeerConfig peerConfig;
     private final Map<String, PingContext> peerNameToPingContextMap = new HashMap<>();
+
+    private int autoPingCount;
 
     public PingPongService(ConnectionService connectionService, PeerConfig peerConfig) {
         this.connectionService = connectionService;
@@ -184,5 +187,36 @@ public class PingPongService {
         }
 
         return pongs;
+    }
+
+    public void keepAlive(boolean discoveryPingEnabled) {
+        boolean hasPingSent = peerNameToPingContextMap.containsKey(peerConfig.getPeerName());
+
+        if (!hasPingSent) {
+            if (incrementAutoPingCountAndCheckIfFullPing() && discoveryPingEnabled) {
+                discoveryPing();
+            } else {
+                sendKeepAliveMessage();
+            }
+        } else {
+            LOGGER.info("The periodic ping is skipped because such a ping already exists");
+        }
+    }
+
+    private boolean incrementAutoPingCountAndCheckIfFullPing() {
+        return ++autoPingCount % peerConfig.getAutoDiscoveryPingFrequency() == 0;
+    }
+
+    private void sendKeepAliveMessage() {
+        LOGGER.info("Sending a keep-alive message");
+
+        var keepAlive = KeepAliveMessage.getDefaultInstance();
+        var protobufMessage = ProtobufMessage.newBuilder()
+                .setKeepAlive(keepAlive)
+                .build();
+
+        for (Connection connection : connectionService.getConnections()) {
+            connection.send(protobufMessage);
+        }
     }
 }

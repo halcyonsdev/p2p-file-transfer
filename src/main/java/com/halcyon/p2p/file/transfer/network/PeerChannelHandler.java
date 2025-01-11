@@ -39,6 +39,8 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
             handlePing(peer, connection, message.getPing());
         } else if (message.hasPong()) {
             handlePong(peer, connection, message.getPong());
+        } else if (message.hasKeepAlive()) {
+            handleKeepAlive(connection);
         }
     }
 

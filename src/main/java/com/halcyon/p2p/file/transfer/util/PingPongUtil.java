@@ -6,7 +6,7 @@ import com.halcyon.p2p.file.transfer.proto.Pong.PongMessage;
 import java.util.Optional;
 
 public class PingPongUtil {
-    private PingPongUtil() {};
+    private PingPongUtil() {}
 
     public static Optional<PingMessage> nextPing(PingMessage previousPing) {
         if (previousPing.getTtl() > 1) {
