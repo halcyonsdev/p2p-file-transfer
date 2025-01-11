@@ -1,9 +1,10 @@
 package com.halcyon.p2p.file.transfer.network;
 
 import com.halcyon.p2p.file.transfer.config.PeerConfig;
+import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
 import com.halcyon.p2p.file.transfer.proto.Ping.PingMessage;
 
-import com.halcyon.p2p.file.transfer.proto.Pong.PongMessage;
+import com.halcyon.p2p.file.transfer.proto.Pong.*;
 import com.halcyon.p2p.file.transfer.service.ConnectionService;
 import com.halcyon.p2p.file.transfer.service.PingPongService;
 import io.netty.channel.Channel;
@@ -48,18 +49,39 @@ public class Peer {
         connectionService.addConnection(connection);
     }
 
+    private boolean isDisabled() {
+        return !running;
+    }
+
     public void handleConnectionClosing(Connection connection) {
         String connectionPeerName = connection.getPeerName();
 
-        if (!connection.isOpen() || connectionPeerName.equals(peerConfig.getPeerName())) {
+        if (connectionPeerName.equals(peerConfig.getPeerName())) {
             return;
+        }
+
+        if (connectionService.removeConnection(connection)) {
+            cancelPings(connection, connectionPeerName);
+            cancelPongs(connectionPeerName);
         }
 
         connection.close();
     }
 
-    private boolean isDisabled() {
-        return !running;
+    public void cancelPings(Connection connection, String disconnectedPeerName) {
+        if (isDisabled()) {
+            LOGGER.warn("Pings of {} can't be cancelled because the peer is disabled", disconnectedPeerName);
+        } else {
+            pingPongService.cancelPings(connection, disconnectedPeerName);
+        }
+    }
+
+    public void cancelPongs(String disconnectedPeerName) {
+        if (isDisabled()) {
+            LOGGER.warn("Pongs of {} can't be cancelled because the peer is disabled", disconnectedPeerName);
+        } else {
+            pingPongService.cancelPongs(disconnectedPeerName);
+        }
     }
 
     public void connectTo(String host, int port, CompletableFuture<Void> futureToNotify) {
@@ -71,8 +93,11 @@ public class Peer {
     }
 
     public void leave(CompletableFuture<Void> futureToNotify) {
+        String peerName = peerConfig.getPeerName();
+
         if (isDisabled()) {
-            LOGGER.warn("{} has already been disabled", peerConfig.getPeerName());
+            LOGGER.warn("{} has already been disabled", peerName);
+            futureToNotify.complete(null);
             return;
         }
 
@@ -84,12 +109,28 @@ public class Peer {
             }
         });
 
-        for (Connection connection : connectionService.getServerNameToConnectionMap()) {
-            connection.close();
-        }
+        pingPongService.cancelOwnPing();
+        pingPongService.cancelPongs(peerName);
+
+        closeConnectionsAndSendCancelPongsMessage(peerName);
 
         bindChannel.close();
         running = false;
+    }
+
+    private void closeConnectionsAndSendCancelPongsMessage(String peerName) {
+        var cancelPongs = CancelPongsMessage.newBuilder()
+                .setPeerName(peerName)
+                .build();
+
+        var protobufMessage = ProtobufMessage.newBuilder()
+                .setCancelPongs(cancelPongs)
+                .build();
+
+        for (Connection connection : connectionService.getServerNameToConnectionMap()) {
+            connection.send(protobufMessage);
+            connection.close();
+        }
     }
 
     public void disconnect(String peerName) {
@@ -98,7 +139,7 @@ public class Peer {
             return;
         }
 
-        Connection connection = connectionService.removeConnection(peerName);
+        Connection connection = connectionService.getConnection(peerName);
         if (connection != null) {
             LOGGER.info("Disconnecting this peer {} from {}", peerConfig.getPeerName(), peerName);
             connection.close();

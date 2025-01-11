@@ -83,6 +83,14 @@ public class PingContext {
         return Collections.unmodifiableList(futures);
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public PingMessage getPing() {
+        return ping;
+    }
+
     @Override
     public String toString() {
         return "PingContext{" +

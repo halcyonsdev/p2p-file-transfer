@@ -3,8 +3,8 @@ package com.halcyon.p2p.file.transfer.util;
 import com.halcyon.p2p.file.transfer.network.Connection;
 import com.halcyon.p2p.file.transfer.network.Peer;
 import com.halcyon.p2p.file.transfer.proto.Handshake.HandshakeMessage;
-import com.halcyon.p2p.file.transfer.proto.Ping.PingMessage;
-import com.halcyon.p2p.file.transfer.proto.Pong.PongMessage;
+import com.halcyon.p2p.file.transfer.proto.Ping.*;
+import com.halcyon.p2p.file.transfer.proto.Pong.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,5 +34,13 @@ public class ProtobufMessageUtil {
 
     public static void handleKeepAlive(Connection connection) {
         LOGGER.info("Keep alive ping received from {}", connection);
+    }
+
+    public static void handleCancelPings(Peer peer, Connection connection, CancelPingsMessage cancelPings) {
+        peer.cancelPings(connection, cancelPings.getPeerName());
+    }
+
+    public static void handleCancelPongs(Peer peer, CancelPongsMessage cancelPongs) {
+        peer.cancelPongs(cancelPongs.getPeerName());
     }
 }

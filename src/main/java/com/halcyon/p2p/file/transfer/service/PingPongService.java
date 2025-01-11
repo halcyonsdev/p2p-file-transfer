@@ -4,8 +4,9 @@ import com.halcyon.p2p.file.transfer.config.PeerConfig;
 import com.halcyon.p2p.file.transfer.network.Connection;
 import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
 import com.halcyon.p2p.file.transfer.proto.KeepAlive.KeepAliveMessage;
-import com.halcyon.p2p.file.transfer.proto.Ping.PingMessage;
-import com.halcyon.p2p.file.transfer.proto.Pong.PongMessage;
+import com.halcyon.p2p.file.transfer.proto.Ping.*;
+import com.halcyon.p2p.file.transfer.proto.Pong.*;
+import com.halcyon.p2p.file.transfer.util.PingPongUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -187,6 +188,157 @@ public class PingPongService {
         }
 
         return pongs;
+    }
+
+    public void cancelOwnPing() {
+        PingContext pingContext = peerNameToPingContextMap.get(peerConfig.getPeerName());
+
+        if (pingContext != null) {
+            LOGGER.info("Cancelling own ping");
+
+            for (CompletableFuture<Collection<String>> future : pingContext.getFutures()) {
+                future.cancel(true);
+            }
+        }
+    }
+
+    public void cancelPings(Connection connection, String disconnectedPeerName) {
+        Iterator<Map.Entry<String, PingContext>> pingIterator = peerNameToPingContextMap.entrySet().iterator();
+
+        while (pingIterator.hasNext()) {
+            Map.Entry<String, PingContext> pingEntry = pingIterator.next();
+            String pingPeerName = pingEntry.getKey();
+            PingContext pingContext = pingEntry.getValue();
+
+            Connection pingOwnerConnection = pingContext.getConnection();
+            boolean shouldBeDeleted = pingPeerName.equals(disconnectedPeerName) && connection.equals(pingOwnerConnection);
+
+            if (!shouldBeDeleted) {
+                shouldBeDeleted = pingOwnerConnection != null && pingOwnerConnection.getPeerName().equals(disconnectedPeerName);
+            }
+
+            if (shouldBeDeleted) {
+                LOGGER.info("Removing a ping of {} because the peer is disabled", pingPeerName);
+                pingIterator.remove();
+
+                notifyPongSendersAboutCancellingPings(connection, pingContext, disconnectedPeerName);
+            }
+        }
+    }
+
+    private void notifyPongSendersAboutCancellingPings(Connection connection, PingContext pingContext, String disconnectedPeerName) {
+        var cancelPings = CancelPingsMessage.newBuilder()
+                .setPeerName(disconnectedPeerName)
+                .build();
+
+        for (PongMessage pong : pingContext.getPongs()) {
+            String pongPeerName = pong.getPeerName();
+            Connection pongConnection = connectionService.getConnection(pongPeerName);
+
+            if (pongConnection != null) {
+                var protobufMessage = ProtobufMessage.newBuilder()
+                        .setCancelPings(cancelPings)
+                        .build();
+
+                connection.send(protobufMessage);
+
+                LOGGER.info("CancelPingsMessage has been sent to {}", pongPeerName);
+            } else {
+                LOGGER.warn("CancelPingsMessage hasn't been sent to {} because there are no connections", pongPeerName);
+            }
+        }
+    }
+
+    public void cancelPongs(String disconnectedPeerName) {
+        for (Map.Entry<String, PingContext> pingEntry : peerNameToPingContextMap.entrySet()) {
+            PingContext pingContext = pingEntry.getValue();
+
+            removePongsAndSendCancelPongsMessage(pingEntry, disconnectedPeerName);
+
+            for (PongMessage pong : new ArrayList<>(pingContext.getPongs())) {
+                String pongPeerName = pong.getPeerName();
+
+                if (pongPeerName.equals(disconnectedPeerName)) {
+                    removePongOfDisconnectedPeer(pingEntry, pongPeerName, disconnectedPeerName);
+                    propagatePing(pingEntry, disconnectedPeerName);
+                }
+            }
+        }
+    }
+
+    private void removePongsAndSendCancelPongsMessage(Map.Entry<String, PingContext> pingEntry, String disconnectedPeerName) {
+        String pingPeerName = pingEntry.getKey();
+        PingContext pingContext = pingEntry.getValue();
+
+        var cancelPongs = CancelPongsMessage.newBuilder()
+                .setPeerName(disconnectedPeerName)
+                .build();
+
+        if (pingContext.removePong(disconnectedPeerName)) {
+            Connection pingOwnerConnection = pingContext.getConnection();
+
+            if (pingOwnerConnection != null) {
+                LOGGER.info("Pong of {} removed in ping of {}. Sending CancelPongsMessage to {}",
+                        disconnectedPeerName, pingPeerName, pingOwnerConnection.getPeerName());
+
+                sendCancelPongsMessage(pingOwnerConnection, cancelPongs);
+            } else {
+                LOGGER.info("Pong of {} removed in ping of {}", disconnectedPeerName, pingPeerName);
+            }
+        }
+    }
+
+    private void sendCancelPongsMessage(Connection connection, CancelPongsMessage cancelPongs) {
+        var protobufMessage = ProtobufMessage.newBuilder()
+                .setCancelPongs(cancelPongs)
+                .build();
+
+        connection.send(protobufMessage);
+    }
+
+    private void removePongOfDisconnectedPeer(Map.Entry<String, PingContext> pingEntry, String pongPeerName, String disconnectedPeerName) {
+        String pingPeerName = pingEntry.getKey();
+        PingContext pingContext = pingEntry.getValue();
+
+        pingContext.removePong(pongPeerName);
+
+        LOGGER.info("Pong of {} removed in ping of {} because it was sent by disconnected peer {}",
+                pongPeerName, pingPeerName, disconnectedPeerName);
+
+        Connection connection = pingContext.getConnection();
+
+        if (connection != null) {
+            var cancelPongs = CancelPongsMessage.newBuilder()
+                    .setPeerName(pongPeerName)
+                    .build();
+
+            sendCancelPongsMessage(connection, cancelPongs);
+
+            LOGGER.info("CancelPongsMessage has been sent to {} for ping of {}", connection.getPeerName(), pingPeerName);
+        }
+    }
+
+    private void propagatePing(Map.Entry<String, PingContext> pingEntry, String disconnectedPeerName) {
+        String pingPeerName = pingEntry.getKey();
+        PingContext pingContext = pingEntry.getValue();
+
+        Optional<PingMessage> nextPingOptional = nextPing(pingContext.getPing());
+
+        if (nextPingOptional.isPresent()) {
+            var next = nextPingOptional.get();
+            String nextPeerName = next.getPeerName();
+
+            LOGGER.info("The ping with the name \"{}\" will be re-sent", nextPeerName);
+
+            for (Connection connection : connectionService.getConnections()) {
+                if (!connection.getPeerName().equals(pingPeerName) && !connection.getPeerName().equals(disconnectedPeerName)
+                        && connection.equals(pingContext.getConnection())) {
+
+                    sendPing(connection, next);
+                    LOGGER.info("The ping of {} has been re-sent because {} left", nextPeerName, disconnectedPeerName);
+                }
+            }
+        }
     }
 
     public void keepAlive(boolean discoveryPingEnabled) {

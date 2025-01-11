@@ -41,6 +41,10 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
             handlePong(peer, connection, message.getPong());
         } else if (message.hasKeepAlive()) {
             handleKeepAlive(connection);
+        } else if (message.hasCancelPings()) {
+            handleCancelPings(peer, connection, message.getCancelPings());
+        } else if (message.hasCancelPongs()) {
+            handleCancelPongs(peer, message.getCancelPongs());
         }
     }
 
@@ -84,7 +88,7 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
     }
 
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
         if (evt instanceof IdleStateEvent idleStateEvent && idleStateEvent.state() == IdleState.READER_IDLE) {
             LOGGER.warn("The channel {} is idle", ctx.channel().remoteAddress());
             ctx.close();

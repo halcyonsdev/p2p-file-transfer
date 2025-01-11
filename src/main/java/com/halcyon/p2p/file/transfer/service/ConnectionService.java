@@ -74,10 +74,14 @@ public class ConnectionService {
         return serverNameToConnectionMap.get(peerName);
     }
 
+    public boolean removeConnection(Connection connection) {
+        return removeConnection(connection.getPeerName()) != null;
+    }
+
     public Connection removeConnection(String peerName) {
         Connection removedConnection = serverNameToConnectionMap.remove(peerName);
 
-        if (removedConnection  != null) {
+        if (removedConnection != null) {
             LOGGER.info("{} is removed from connections", removedConnection);
         } else {
             LOGGER.warn("The connection to {} is not removed because it doesn't exist", peerName);
