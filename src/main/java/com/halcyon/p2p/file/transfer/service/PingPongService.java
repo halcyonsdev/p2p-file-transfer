@@ -6,7 +6,6 @@ import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
 import com.halcyon.p2p.file.transfer.proto.KeepAlive.KeepAliveMessage;
 import com.halcyon.p2p.file.transfer.proto.Ping.*;
 import com.halcyon.p2p.file.transfer.proto.Pong.*;
-import com.halcyon.p2p.file.transfer.util.PingPongUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

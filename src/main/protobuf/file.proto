@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+message GetFilesRequest {
+  string peerName = 1;
+}
+
+message GetFilesResponse {
+  string peerName = 1;
+  repeated string fileNames = 2;
+}

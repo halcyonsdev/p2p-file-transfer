@@ -39,6 +39,9 @@ public class PeerRunner {
         } else if (command.startsWith("disconnect ")) {
             String peerName = command.split(" ")[1];
             peerService.disconnect(peerName);
+        } else if (command.startsWith("getFiles ")) {
+            String peerName = command.split(" ")[1];
+            peerService.sendGetFilesRequest(peerName);
         } else {
             result = CommandResult.INVALID;
         }

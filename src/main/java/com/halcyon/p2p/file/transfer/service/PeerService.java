@@ -40,8 +40,9 @@ public class PeerService {
 
         ConnectionService connectionService = new ConnectionService(peerConfig, networkEventLoopGroup, peerEventLoopGroup);
         PingPongService pingPongService = new PingPongService(connectionService, peerConfig);
+        FileService fileService = new FileService(peerConfig);
 
-        this.peer = new Peer(peerConfig, connectionService, pingPongService);
+        this.peer = new Peer(peerConfig, connectionService, pingPongService, fileService);
     }
 
     public void start() throws InterruptedException {
@@ -137,5 +138,9 @@ public class PeerService {
         CompletableFuture<Collection<String>> future = new CompletableFuture<>();
         peerEventLoopGroup.execute(() -> peer.ping(future));
         return future;
+    }
+
+    public void sendGetFilesRequest(String peerName) {
+        peerEventLoopGroup.execute(() -> peer.sendGetFilesRequest(peerName));
     }
 }

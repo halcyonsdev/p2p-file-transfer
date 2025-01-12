@@ -4,14 +4,21 @@ import "src/main/protobuf/handshake.proto";
 import "src/main/protobuf/ping.proto";
 import "src/main/protobuf/pong.proto";
 import "src/main/protobuf/keep_alive.proto";
+import "src/main/protobuf/file.proto";
 
 message ProtobufMessage {
   oneof payload {
     HandshakeMessage handshake = 1;
+
     PingMessage ping = 2;
     PongMessage pong = 3;
+
     CancelPingsMessage cancelPings = 4;
     CancelPongsMessage cancelPongs = 5;
+
     KeepAliveMessage keepAlive = 6;
+
+    GetFilesRequest getFilesRequest = 7;
+    GetFilesResponse getFilesResponse = 8;
   }
 }

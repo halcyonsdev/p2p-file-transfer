@@ -12,8 +12,6 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.halcyon.p2p.file.transfer.util.ProtobufMessageUtil.*;
-
 @ChannelHandler.Sharable
 public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMessage> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeerChannelHandler.class);
@@ -34,17 +32,32 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
         Connection connection = getSessionConnection(ctx).get();
 
         if (message.hasHandshake()) {
-            handleHandshake(peer, connection, message.getHandshake());
+            handleHandshake(connection, message.getHandshake());
         } else if (message.hasPing()) {
-            handlePing(peer, connection, message.getPing());
+            peer.handlePing(connection, message.getPing());
         } else if (message.hasPong()) {
-            handlePong(peer, connection, message.getPong());
+            peer.handlePong(connection, message.getPong());
         } else if (message.hasKeepAlive()) {
-            handleKeepAlive(connection);
+            LOGGER.info("Keep alive ping received from {}", connection);
         } else if (message.hasCancelPings()) {
-            handleCancelPings(peer, connection, message.getCancelPings());
+            peer.cancelPings(connection, message.getCancelPings().getPeerName());
         } else if (message.hasCancelPongs()) {
-            handleCancelPongs(peer, message.getCancelPongs());
+            peer.cancelPongs(message.getCancelPongs().getPeerName());
+        } else if (message.hasGetFilesRequest()) {
+            peer.handleGetFilesRequest(message.getGetFilesRequest());
+        } else if (message.hasGetFilesResponse()) {
+            peer.handleGetFilesResponse(message.getGetFilesResponse());
+        }
+    }
+
+    private void handleHandshake(Connection connection, HandshakeMessage handshake) {
+        String peerName = handshake.getSenderPeerName();
+
+        if (!connection.isOpen()) {
+            connection.open(peerName);
+            peer.handleConnectionOpening(connection);
+        } else if (!connection.getPeerName().equals(peerName)) {
+            LOGGER.warn("Mismatching of peer names! Handshake: {} Connection: {}", peerName, connection.getPeerName());
         }
     }
 
@@ -80,7 +93,7 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        LOGGER.error("Channel {} failure occurred", ctx.channel().remoteAddress());
+        LOGGER.error("Channel {} failure occurred", ctx.channel().remoteAddress(), cause);
         ctx.close();
 
         Connection connection = getSessionConnection(ctx).get();

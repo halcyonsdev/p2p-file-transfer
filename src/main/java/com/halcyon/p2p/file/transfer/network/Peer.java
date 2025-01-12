@@ -1,11 +1,13 @@
 package com.halcyon.p2p.file.transfer.network;
 
 import com.halcyon.p2p.file.transfer.config.PeerConfig;
+import com.halcyon.p2p.file.transfer.proto.File.*;
 import com.halcyon.p2p.file.transfer.proto.General.ProtobufMessage;
 import com.halcyon.p2p.file.transfer.proto.Ping.PingMessage;
 
 import com.halcyon.p2p.file.transfer.proto.Pong.*;
 import com.halcyon.p2p.file.transfer.service.ConnectionService;
+import com.halcyon.p2p.file.transfer.service.FileService;
 import com.halcyon.p2p.file.transfer.service.PingPongService;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
@@ -25,13 +27,15 @@ public class Peer {
     private final PeerConfig peerConfig;
     private final ConnectionService connectionService;
     private final PingPongService pingPongService;
+    private final FileService fileService;
     private Channel bindChannel;
     private boolean running = true;
 
-    public Peer(PeerConfig peerConfig, ConnectionService connectionService, PingPongService pingPongService) {
+    public Peer(PeerConfig peerConfig, ConnectionService connectionService, PingPongService pingPongService, FileService fileService) {
         this.peerConfig = peerConfig;
         this.connectionService = connectionService;
         this.pingPongService = pingPongService;
+        this.fileService = fileService;
     }
 
     public void handleConnectionOpening(Connection connection) {
@@ -222,6 +226,32 @@ public class Peer {
             pingPongService.keepAlive(discoveryPingEnabled);
         } else {
             LOGGER.info("The auto ping wasn't started because there are no connections");
+        }
+    }
+
+    public void sendGetFilesRequest(String peerName) {
+        if (isDisabled()) {
+            LOGGER.warn("Sending GetFilesRequest is ignored because the peer is disabled");
+        } else {
+            Connection connection = connectionService.getConnection(peerName);
+            fileService.sendGetFilesRequest(connection);
+        }
+    }
+
+    public void handleGetFilesRequest(GetFilesRequest request) {
+        if (isDisabled()) {
+            LOGGER.warn("GetFilesRequest from {} is ignored because the peer is disabled", request.getPeerName());
+        } else {
+            Connection connection = connectionService.getConnection(request.getPeerName());
+            fileService.handleGetFilesRequest(connection);
+        }
+    }
+
+    public void handleGetFilesResponse(GetFilesResponse response) {
+        if (isDisabled()) {
+            LOGGER.warn("GetFilesResponse from {} is ignored because the peer is disabled", response.getPeerName());
+        } else {
+            fileService.handleGetFilesResponse(response);
         }
     }
 
