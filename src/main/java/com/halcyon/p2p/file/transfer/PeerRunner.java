@@ -42,6 +42,12 @@ public class PeerRunner {
         } else if (command.startsWith("getFiles ")) {
             String peerName = command.split(" ")[1];
             peerService.sendGetFilesRequest(peerName);
+        } else if (command.startsWith("download ")) {
+            String[] tokens = command.split(" ");
+            String peerName = tokens[1];
+            String fileName = tokens[2];
+
+            peerService.sendFileRequest(peerName, fileName);
         } else {
             result = CommandResult.INVALID;
         }

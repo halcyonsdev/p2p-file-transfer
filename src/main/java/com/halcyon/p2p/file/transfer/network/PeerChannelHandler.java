@@ -44,9 +44,13 @@ public class PeerChannelHandler extends SimpleChannelInboundHandler<ProtobufMess
         } else if (message.hasCancelPongs()) {
             peer.cancelPongs(message.getCancelPongs().getPeerName());
         } else if (message.hasGetFilesRequest()) {
-            peer.handleGetFilesRequest(message.getGetFilesRequest());
+            peer.handleGetFilesRequest(connection);
         } else if (message.hasGetFilesResponse()) {
-            peer.handleGetFilesResponse(message.getGetFilesResponse());
+            peer.handleGetFilesResponse(connection, message.getGetFilesResponse());
+        } else if (message.hasFileRequest()) {
+            peer.handleFileRequest(connection, message.getFileRequest());
+        } else if (message.hasFileResponse()) {
+            peer.handleFileResponse(message.getFileResponse());
         }
     }
 

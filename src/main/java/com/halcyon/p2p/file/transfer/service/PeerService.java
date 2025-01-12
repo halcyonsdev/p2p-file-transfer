@@ -143,4 +143,8 @@ public class PeerService {
     public void sendGetFilesRequest(String peerName) {
         peerEventLoopGroup.execute(() -> peer.sendGetFilesRequest(peerName));
     }
+
+    public void sendFileRequest(String peerName, String fileName) {
+        peerEventLoopGroup.execute(() -> peer.sendFileRequest(peerName, fileName));
+    }
 }

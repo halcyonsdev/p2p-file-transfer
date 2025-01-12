@@ -238,20 +238,44 @@ public class Peer {
         }
     }
 
-    public void handleGetFilesRequest(GetFilesRequest request) {
+    public void handleGetFilesRequest(Connection connection) {
         if (isDisabled()) {
-            LOGGER.warn("GetFilesRequest from {} is ignored because the peer is disabled", request.getPeerName());
+            LOGGER.warn("GetFilesRequest from {} is ignored because the peer is disabled", connection.getPeerName());
         } else {
-            Connection connection = connectionService.getConnection(request.getPeerName());
             fileService.handleGetFilesRequest(connection);
         }
     }
 
-    public void handleGetFilesResponse(GetFilesResponse response) {
+    public void handleGetFilesResponse(Connection connection, GetFilesResponse response) {
         if (isDisabled()) {
-            LOGGER.warn("GetFilesResponse from {} is ignored because the peer is disabled", response.getPeerName());
+            LOGGER.warn("GetFilesResponse from {} is ignored because the peer is disabled", connection.getPeerName());
         } else {
             fileService.handleGetFilesResponse(response);
+        }
+    }
+
+    public void sendFileRequest(String peerName, String fileName) {
+        if (isDisabled()) {
+            LOGGER.warn("Sending FileRequest is ignored because the peer is disabled");
+        } else {
+            Connection connection = connectionService.getConnection(peerName);
+            fileService.sendFileRequest(connection, fileName);
+        }
+    }
+
+    public void handleFileRequest(Connection connection, FileRequest request) {
+        if (isDisabled()) {
+            LOGGER.warn("FileRequest from {} is ignored because the peer is disabled", request.getFileName());
+        } else {
+            fileService.handleFileRequest(connection, request);
+        }
+    }
+
+    public void handleFileResponse(FileResponse response) {
+        if (isDisabled()) {
+            LOGGER.warn("FileResponse from {} is ignored because the peer is disabled", response.getFileName());
+        } else {
+            fileService.handleFileResponse(response);
         }
     }
 

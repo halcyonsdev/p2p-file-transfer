@@ -4,6 +4,7 @@
 // Protobuf Java Version: 4.29.2
 
 package com.halcyon.p2p.file.transfer.proto;
+
 public final class General {
   private General() {}
   static {
@@ -148,6 +149,36 @@ public final class General {
      */
     File.GetFilesResponseOrBuilder getGetFilesResponseOrBuilder();
 
+    /**
+     * <code>.FileRequest fileRequest = 9;</code>
+     * @return Whether the fileRequest field is set.
+     */
+    boolean hasFileRequest();
+    /**
+     * <code>.FileRequest fileRequest = 9;</code>
+     * @return The fileRequest.
+     */
+    File.FileRequest getFileRequest();
+    /**
+     * <code>.FileRequest fileRequest = 9;</code>
+     */
+    File.FileRequestOrBuilder getFileRequestOrBuilder();
+
+    /**
+     * <code>.FileResponse fileResponse = 10;</code>
+     * @return Whether the fileResponse field is set.
+     */
+    boolean hasFileResponse();
+    /**
+     * <code>.FileResponse fileResponse = 10;</code>
+     * @return The fileResponse.
+     */
+    File.FileResponse getFileResponse();
+    /**
+     * <code>.FileResponse fileResponse = 10;</code>
+     */
+    File.FileResponseOrBuilder getFileResponseOrBuilder();
+
     General.ProtobufMessage.PayloadCase getPayloadCase();
   }
   /**
@@ -201,6 +232,8 @@ public final class General {
       KEEPALIVE(6),
       GETFILESREQUEST(7),
       GETFILESRESPONSE(8),
+      FILEREQUEST(9),
+      FILERESPONSE(10),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -226,6 +259,8 @@ public final class General {
           case 6: return KEEPALIVE;
           case 7: return GETFILESREQUEST;
           case 8: return GETFILESRESPONSE;
+          case 9: return FILEREQUEST;
+          case 10: return FILERESPONSE;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -489,6 +524,68 @@ public final class General {
       return File.GetFilesResponse.getDefaultInstance();
     }
 
+    public static final int FILEREQUEST_FIELD_NUMBER = 9;
+    /**
+     * <code>.FileRequest fileRequest = 9;</code>
+     * @return Whether the fileRequest field is set.
+     */
+    @java.lang.Override
+    public boolean hasFileRequest() {
+      return payloadCase_ == 9;
+    }
+    /**
+     * <code>.FileRequest fileRequest = 9;</code>
+     * @return The fileRequest.
+     */
+    @java.lang.Override
+    public File.FileRequest getFileRequest() {
+      if (payloadCase_ == 9) {
+         return (File.FileRequest) payload_;
+      }
+      return File.FileRequest.getDefaultInstance();
+    }
+    /**
+     * <code>.FileRequest fileRequest = 9;</code>
+     */
+    @java.lang.Override
+    public File.FileRequestOrBuilder getFileRequestOrBuilder() {
+      if (payloadCase_ == 9) {
+         return (File.FileRequest) payload_;
+      }
+      return File.FileRequest.getDefaultInstance();
+    }
+
+    public static final int FILERESPONSE_FIELD_NUMBER = 10;
+    /**
+     * <code>.FileResponse fileResponse = 10;</code>
+     * @return Whether the fileResponse field is set.
+     */
+    @java.lang.Override
+    public boolean hasFileResponse() {
+      return payloadCase_ == 10;
+    }
+    /**
+     * <code>.FileResponse fileResponse = 10;</code>
+     * @return The fileResponse.
+     */
+    @java.lang.Override
+    public File.FileResponse getFileResponse() {
+      if (payloadCase_ == 10) {
+         return (File.FileResponse) payload_;
+      }
+      return File.FileResponse.getDefaultInstance();
+    }
+    /**
+     * <code>.FileResponse fileResponse = 10;</code>
+     */
+    @java.lang.Override
+    public File.FileResponseOrBuilder getFileResponseOrBuilder() {
+      if (payloadCase_ == 10) {
+         return (File.FileResponse) payload_;
+      }
+      return File.FileResponse.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -526,6 +623,12 @@ public final class General {
       }
       if (payloadCase_ == 8) {
         output.writeMessage(8, (File.GetFilesResponse) payload_);
+      }
+      if (payloadCase_ == 9) {
+        output.writeMessage(9, (File.FileRequest) payload_);
+      }
+      if (payloadCase_ == 10) {
+        output.writeMessage(10, (File.FileResponse) payload_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -567,6 +670,14 @@ public final class General {
       if (payloadCase_ == 8) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(8, (File.GetFilesResponse) payload_);
+      }
+      if (payloadCase_ == 9) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, (File.FileRequest) payload_);
+      }
+      if (payloadCase_ == 10) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, (File.FileResponse) payload_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -617,6 +728,14 @@ public final class General {
           if (!getGetFilesResponse()
               .equals(other.getGetFilesResponse())) return false;
           break;
+        case 9:
+          if (!getFileRequest()
+              .equals(other.getFileRequest())) return false;
+          break;
+        case 10:
+          if (!getFileResponse()
+              .equals(other.getFileResponse())) return false;
+          break;
         case 0:
         default:
       }
@@ -663,6 +782,14 @@ public final class General {
         case 8:
           hash = (37 * hash) + GETFILESRESPONSE_FIELD_NUMBER;
           hash = (53 * hash) + getGetFilesResponse().hashCode();
+          break;
+        case 9:
+          hash = (37 * hash) + FILEREQUEST_FIELD_NUMBER;
+          hash = (53 * hash) + getFileRequest().hashCode();
+          break;
+        case 10:
+          hash = (37 * hash) + FILERESPONSE_FIELD_NUMBER;
+          hash = (53 * hash) + getFileResponse().hashCode();
           break;
         case 0:
         default:
@@ -822,6 +949,12 @@ public final class General {
         if (getFilesResponseBuilder_ != null) {
           getFilesResponseBuilder_.clear();
         }
+        if (fileRequestBuilder_ != null) {
+          fileRequestBuilder_.clear();
+        }
+        if (fileResponseBuilder_ != null) {
+          fileResponseBuilder_.clear();
+        }
         payloadCase_ = 0;
         payload_ = null;
         return this;
@@ -895,6 +1028,14 @@ public final class General {
             getFilesResponseBuilder_ != null) {
           result.payload_ = getFilesResponseBuilder_.build();
         }
+        if (payloadCase_ == 9 &&
+            fileRequestBuilder_ != null) {
+          result.payload_ = fileRequestBuilder_.build();
+        }
+        if (payloadCase_ == 10 &&
+            fileResponseBuilder_ != null) {
+          result.payload_ = fileResponseBuilder_.build();
+        }
       }
 
       @java.lang.Override
@@ -940,6 +1081,14 @@ public final class General {
           }
           case GETFILESRESPONSE: {
             mergeGetFilesResponse(other.getGetFilesResponse());
+            break;
+          }
+          case FILEREQUEST: {
+            mergeFileRequest(other.getFileRequest());
+            break;
+          }
+          case FILERESPONSE: {
+            mergeFileResponse(other.getFileResponse());
             break;
           }
           case PAYLOAD_NOT_SET: {
@@ -1028,6 +1177,20 @@ public final class General {
                 payloadCase_ = 8;
                 break;
               } // case 66
+              case 74: {
+                input.readMessage(
+                    getFileRequestFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                payloadCase_ = 9;
+                break;
+              } // case 74
+              case 82: {
+                input.readMessage(
+                    getFileResponseFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                payloadCase_ = 10;
+                break;
+              } // case 82
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -2196,6 +2359,290 @@ public final class General {
         return getFilesResponseBuilder_;
       }
 
+      private com.google.protobuf.SingleFieldBuilder<
+          File.FileRequest, File.FileRequest.Builder, File.FileRequestOrBuilder> fileRequestBuilder_;
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       * @return Whether the fileRequest field is set.
+       */
+      @java.lang.Override
+      public boolean hasFileRequest() {
+        return payloadCase_ == 9;
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       * @return The fileRequest.
+       */
+      @java.lang.Override
+      public File.FileRequest getFileRequest() {
+        if (fileRequestBuilder_ == null) {
+          if (payloadCase_ == 9) {
+            return (File.FileRequest) payload_;
+          }
+          return File.FileRequest.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 9) {
+            return fileRequestBuilder_.getMessage();
+          }
+          return File.FileRequest.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       */
+      public Builder setFileRequest(File.FileRequest value) {
+        if (fileRequestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          fileRequestBuilder_.setMessage(value);
+        }
+        payloadCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       */
+      public Builder setFileRequest(
+          File.FileRequest.Builder builderForValue) {
+        if (fileRequestBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          fileRequestBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       */
+      public Builder mergeFileRequest(File.FileRequest value) {
+        if (fileRequestBuilder_ == null) {
+          if (payloadCase_ == 9 &&
+              payload_ != File.FileRequest.getDefaultInstance()) {
+            payload_ = File.FileRequest.newBuilder((File.FileRequest) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 9) {
+            fileRequestBuilder_.mergeFrom(value);
+          } else {
+            fileRequestBuilder_.setMessage(value);
+          }
+        }
+        payloadCase_ = 9;
+        return this;
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       */
+      public Builder clearFileRequest() {
+        if (fileRequestBuilder_ == null) {
+          if (payloadCase_ == 9) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 9) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          fileRequestBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       */
+      public File.FileRequest.Builder getFileRequestBuilder() {
+        return getFileRequestFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       */
+      @java.lang.Override
+      public File.FileRequestOrBuilder getFileRequestOrBuilder() {
+        if ((payloadCase_ == 9) && (fileRequestBuilder_ != null)) {
+          return fileRequestBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 9) {
+            return (File.FileRequest) payload_;
+          }
+          return File.FileRequest.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.FileRequest fileRequest = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          File.FileRequest, File.FileRequest.Builder, File.FileRequestOrBuilder> 
+          getFileRequestFieldBuilder() {
+        if (fileRequestBuilder_ == null) {
+          if (!(payloadCase_ == 9)) {
+            payload_ = File.FileRequest.getDefaultInstance();
+          }
+          fileRequestBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              File.FileRequest, File.FileRequest.Builder, File.FileRequestOrBuilder>(
+                  (File.FileRequest) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 9;
+        onChanged();
+        return fileRequestBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilder<
+          File.FileResponse, File.FileResponse.Builder, File.FileResponseOrBuilder> fileResponseBuilder_;
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       * @return Whether the fileResponse field is set.
+       */
+      @java.lang.Override
+      public boolean hasFileResponse() {
+        return payloadCase_ == 10;
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       * @return The fileResponse.
+       */
+      @java.lang.Override
+      public File.FileResponse getFileResponse() {
+        if (fileResponseBuilder_ == null) {
+          if (payloadCase_ == 10) {
+            return (File.FileResponse) payload_;
+          }
+          return File.FileResponse.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 10) {
+            return fileResponseBuilder_.getMessage();
+          }
+          return File.FileResponse.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       */
+      public Builder setFileResponse(File.FileResponse value) {
+        if (fileResponseBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          fileResponseBuilder_.setMessage(value);
+        }
+        payloadCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       */
+      public Builder setFileResponse(
+          File.FileResponse.Builder builderForValue) {
+        if (fileResponseBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          fileResponseBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       */
+      public Builder mergeFileResponse(File.FileResponse value) {
+        if (fileResponseBuilder_ == null) {
+          if (payloadCase_ == 10 &&
+              payload_ != File.FileResponse.getDefaultInstance()) {
+            payload_ = File.FileResponse.newBuilder((File.FileResponse) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 10) {
+            fileResponseBuilder_.mergeFrom(value);
+          } else {
+            fileResponseBuilder_.setMessage(value);
+          }
+        }
+        payloadCase_ = 10;
+        return this;
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       */
+      public Builder clearFileResponse() {
+        if (fileResponseBuilder_ == null) {
+          if (payloadCase_ == 10) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 10) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          fileResponseBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       */
+      public File.FileResponse.Builder getFileResponseBuilder() {
+        return getFileResponseFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       */
+      @java.lang.Override
+      public File.FileResponseOrBuilder getFileResponseOrBuilder() {
+        if ((payloadCase_ == 10) && (fileResponseBuilder_ != null)) {
+          return fileResponseBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 10) {
+            return (File.FileResponse) payload_;
+          }
+          return File.FileResponse.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.FileResponse fileResponse = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          File.FileResponse, File.FileResponse.Builder, File.FileResponseOrBuilder> 
+          getFileResponseFieldBuilder() {
+        if (fileResponseBuilder_ == null) {
+          if (!(payloadCase_ == 10)) {
+            payload_ = File.FileResponse.getDefaultInstance();
+          }
+          fileResponseBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              File.FileResponse, File.FileResponse.Builder, File.FileResponseOrBuilder>(
+                  (File.FileResponse) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 10;
+        onChanged();
+        return fileResponseBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:ProtobufMessage)
     }
 
@@ -2265,7 +2712,7 @@ public final class General {
       "ain/protobuf/handshake.proto\032\034src/main/p" +
       "rotobuf/ping.proto\032\034src/main/protobuf/po" +
       "ng.proto\032\"src/main/protobuf/keep_alive.p" +
-      "roto\032\034src/main/protobuf/file.proto\"\334\002\n\017P" +
+      "roto\032\034src/main/protobuf/file.proto\"\250\003\n\017P" +
       "rotobufMessage\022&\n\thandshake\030\001 \001(\0132\021.Hand" +
       "shakeMessageH\000\022\034\n\004ping\030\002 \001(\0132\014.PingMessa" +
       "geH\000\022\034\n\004pong\030\003 \001(\0132\014.PongMessageH\000\022*\n\013ca" +
@@ -2274,7 +2721,9 @@ public final class General {
       "H\000\022&\n\tkeepAlive\030\006 \001(\0132\021.KeepAliveMessage" +
       "H\000\022+\n\017getFilesRequest\030\007 \001(\0132\020.GetFilesRe" +
       "questH\000\022-\n\020getFilesResponse\030\010 \001(\0132\021.GetF" +
-      "ilesResponseH\000B\t\n\007payloadb\006proto3"
+      "ilesResponseH\000\022#\n\013fileRequest\030\t \001(\0132\014.Fi" +
+      "leRequestH\000\022%\n\014fileResponse\030\n \001(\0132\r.File" +
+      "ResponseH\000B\t\n\007payloadb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2290,7 +2739,7 @@ public final class General {
     internal_static_ProtobufMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ProtobufMessage_descriptor,
-        new java.lang.String[] { "Handshake", "Ping", "Pong", "CancelPings", "CancelPongs", "KeepAlive", "GetFilesRequest", "GetFilesResponse", "Payload", });
+        new java.lang.String[] { "Handshake", "Ping", "Pong", "CancelPings", "CancelPongs", "KeepAlive", "GetFilesRequest", "GetFilesResponse", "FileRequest", "FileResponse", "Payload", });
     descriptor.resolveAllFeaturesImmutable();
     Handshake.getDescriptor();
     Ping.getDescriptor();

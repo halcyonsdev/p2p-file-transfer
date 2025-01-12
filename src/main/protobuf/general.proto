@@ -20,5 +20,8 @@ message ProtobufMessage {
 
     GetFilesRequest getFilesRequest = 7;
     GetFilesResponse getFilesResponse = 8;
+
+    FileRequest fileRequest = 9;
+    FileResponse fileResponse = 10;
   }
 }

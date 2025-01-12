@@ -1,10 +1,20 @@
 syntax = "proto3";
 
 message GetFilesRequest {
-  string peerName = 1;
+
 }
 
 message GetFilesResponse {
   string peerName = 1;
   repeated string fileNames = 2;
+}
+
+message FileRequest {
+  string fileName = 1;
+}
+
+message FileResponse {
+  bytes data = 1;
+  string fileName = 2;
+  bool isLastChunk = 3;
 }
