@@ -45,3 +45,41 @@ The ping-pong system is a critical component of the network that:
 
 ### 9. **Logging**
 - Provides detailed logs for network events, file transfers, and system actions.
+
+---
+
+## How to Run
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/halcyonsdev/p2p-file-transfer.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd p2p-file-transfer
+   ```
+
+3. Build the project:
+   ```bash
+   mvn clean install
+   ```
+
+4. Run the application:
+   ```bash
+   java -DpeerName=peer -jar target/p2p-file-transfer.jar --config=config/config.properties --peerName=peer --bindPort=8080
+   ```
+
+---
+
+## How It Works
+
+1. **Startup:** Each peer starts and loads its configuration from the provided `.properties` file or by default properties.
+2. **Handshake:** Peers perform an initial handshake to establish connections and exchange metadata.
+3. **Ping-Pong:** The ping-pong system ensures active peers are discovered and maintains a healthy network.
+4. **File Requests:** Peers can request files from others by sending a `GetFilesRequest` message and receiving the response with available file names.
+5. **File Transfer:** File chunks are sent between peers upon request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
