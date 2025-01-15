@@ -1,6 +1,32 @@
 # P2P-File-Transfer | Java, Netty, Protobuf
 It is an unstructured peer-to-peer file-sharing network using Java 21 and Netty 4
 
+---
+
+## How to Run
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/halcyonsdev/p2p-file-transfer.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd p2p-file-transfer
+   ```
+
+3. Build the project:
+   ```bash
+   mvn clean install
+   ```
+
+4. Run the application:
+   ```bash
+   java -DpeerName=peer -jar target/p2p-file-transfer.jar --config=config/config.properties --peerName=peer --bindPort=8080
+   ```
+
+---
+
 ## Features
 
 ### 1. **Peer-to-Peer Network**
@@ -48,30 +74,6 @@ The ping-pong system is a critical component of the network that:
 
 ---
 
-## How to Run
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/halcyonsdev/p2p-file-transfer.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd p2p-file-transfer
-   ```
-
-3. Build the project:
-   ```bash
-   mvn clean install
-   ```
-
-4. Run the application:
-   ```bash
-   java -DpeerName=peer -jar target/p2p-file-transfer.jar --config=config/config.properties --peerName=peer --bindPort=8080
-   ```
-
----
-
 ## How It Works
 
 1. **Startup:** Each peer starts and loads its configuration from the provided `.properties` file or by default properties.
@@ -79,6 +81,8 @@ The ping-pong system is a critical component of the network that:
 3. **Ping-Pong:** The ping-pong system ensures active peers are discovered and maintains a healthy network.
 4. **File Requests:** Peers can request files from others by sending a `GetFilesRequest` message and receiving the response with available file names.
 5. **File Transfer:** File chunks are sent between peers upon request.
+
+---
 
 ## License
 
