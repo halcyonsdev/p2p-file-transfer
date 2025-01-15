@@ -1,15 +1,15 @@
 package com.halcyon.p2p.file.transfer;
 
+import com.halcyon.p2p.file.transfer.config.ConfigProperty;
 import com.halcyon.p2p.file.transfer.config.PeerConfig;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 public class Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
@@ -17,6 +17,7 @@ public class Application {
     private static final String PEER_NAME_SYSTEM_PROPERTY = "peerName";
     private static final String PEER_NAME_PARAMETER = "peerName";
     private static final String BIND_PORT_PARAMETER = "bindPort";
+    private static final String CONFIG_FILE_PARAMETER = "config";
     private static final String HELP_PARAMETER = "help";
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -48,6 +49,7 @@ public class Application {
         OptionParser optionParser = new OptionParser();
 
         optionParser.accepts(PEER_NAME_PARAMETER).withRequiredArg().ofType(String.class).describedAs("peer name");
+        optionParser.accepts(CONFIG_FILE_PARAMETER).withOptionalArg().ofType(File.class).describedAs("config properties file");
         optionParser.accepts(BIND_PORT_PARAMETER).withRequiredArg().ofType(Integer.class).describedAs("port to bind");
         optionParser.accepts(HELP_PARAMETER).forHelp();
 
@@ -74,7 +76,38 @@ public class Application {
         int portToBind = (int) options.valueOf(BIND_PORT_PARAMETER);
 
         PeerConfig peerConfig = new PeerConfig(peerName);
+        populateConfig(options, peerConfig);
+
         return new PeerRunner(peerConfig, portToBind);
+    }
+
+    private static void populateConfig(OptionSet options, PeerConfig peerConfig) {
+        if (options.has(CONFIG_FILE_PARAMETER)) {
+            File file = (File) options.valueOf(CONFIG_FILE_PARAMETER);
+            loadConfig(peerConfig, file);
+        }
+
+        LOGGER.info("Using configuration: {}", peerConfig);
+    }
+
+    private static void loadConfig(PeerConfig peerConfig, File file) {
+        Properties properties = new Properties();
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            properties.load(fileInputStream);
+            fileInputStream.close();
+
+            for (String propertyName : properties.stringPropertyNames()) {
+                ConfigProperty property = ConfigProperty.getByName(propertyName);
+                int value = Integer.parseInt(properties.getProperty(propertyName));
+
+                property.setValue(value, peerConfig);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Error occurred while reading config file. Please check its validity");
+            System.exit(-1);
+        }
     }
 
     private static void printHelp(String line) {

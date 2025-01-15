@@ -83,6 +83,11 @@ public class PeerConfig {
         return "PeerConfig{" +
                 "peerName='" + peerName + '\'' +
                 ", maxReadIdleSeconds=" + maxReadIdleSeconds +
+                ", pingTimeoutSeconds=" + pingTimeoutSeconds +
+                ", pingTtl=" + pingTtl +
+                ", maxNumberOfActiveConnections=" + maxNumberOfActiveConnections +
+                ", autoDiscoveryPingFrequency=" + autoDiscoveryPingFrequency +
+                ", keepAlivePeriodSeconds=" + keepAlivePeriodSeconds +
                 '}';
     }
 }

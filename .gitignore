@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+downloads/
+shared_directory/
+config/
