@@ -258,8 +258,7 @@ public class Peer {
         if (isDisabled()) {
             LOGGER.warn("Sending FileRequest is ignored because the peer is disabled");
         } else {
-            Connection connection = connectionService.getConnection(peerName);
-            fileService.sendFileRequest(connection, fileName);
+            fileService.sendFileRequest(peerName, fileName);
         }
     }
 

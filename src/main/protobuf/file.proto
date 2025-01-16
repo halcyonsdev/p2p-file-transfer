@@ -6,7 +6,7 @@ message GetFilesRequest {
 
 message GetFilesResponse {
   string peerName = 1;
-  repeated string fileNames = 2;
+  repeated string fileNames = 3;
 }
 
 message FileRequest {

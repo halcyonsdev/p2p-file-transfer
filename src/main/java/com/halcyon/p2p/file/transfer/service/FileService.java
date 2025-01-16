@@ -17,11 +17,13 @@ public class FileService {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileService.class);
 
     private final PeerConfig peerConfig;
+    private final ConnectionService connectionService;
 
     private final Map<String, FileOutputStream> fileNameToStreamMap = new HashMap<>();
 
-    public FileService(PeerConfig peerConfig) {
+    public FileService(PeerConfig peerConfig, ConnectionService connectionService) {
         this.peerConfig = peerConfig;
+        this.connectionService = connectionService;
     }
 
     public void sendGetFilesRequest(Connection connection) {
@@ -71,7 +73,12 @@ public class FileService {
         }
     }
 
-    public void sendFileRequest(Connection connection, String fileName) {
+    public void sendFileRequest(String peerName, String fileName) {
+        if (!connectionService.hasConnection(peerName)) {
+            LOGGER.warn("There is no connection to the {}", peerName);
+            return;
+        }
+
         var fileRequest = FileRequest.newBuilder()
                 .setFileName(fileName)
                 .build();
@@ -80,12 +87,19 @@ public class FileService {
                 .setFileRequest(fileRequest)
                 .build();
 
+        Connection connection = connectionService.getConnection(peerName);
         connection.send(protobufMessage);
+
         LOGGER.info("A FileRequest for {} was sent from {} to {}", fileName, peerConfig.getPeerName(), connection.getPeerName());
     }
 
     public void handleFileRequest(Connection connection, FileRequest request) {
         File file = new File("shared_directory/" + request.getFileName());
+
+        if (!file.exists()) {
+            LOGGER.warn("The file with name {} was not found", file.getName());
+            return;
+        }
 
         try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
             long fileSize = file.length();

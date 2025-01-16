@@ -397,24 +397,24 @@ public final class File {
         getPeerNameBytes();
 
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @return A list containing the fileNames.
      */
     java.util.List<java.lang.String>
         getFileNamesList();
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @return The count of fileNames.
      */
     int getFileNamesCount();
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @param index The index of the element to return.
      * @return The fileNames at the given index.
      */
     java.lang.String getFileNames(int index);
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @param index The index of the value to return.
      * @return The bytes of the fileNames at the given index.
      */
@@ -500,12 +500,12 @@ public final class File {
       }
     }
 
-    public static final int FILENAMES_FIELD_NUMBER = 2;
+    public static final int FILENAMES_FIELD_NUMBER = 3;
     @SuppressWarnings("serial")
     private com.google.protobuf.LazyStringArrayList fileNames_ =
         com.google.protobuf.LazyStringArrayList.emptyList();
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @return A list containing the fileNames.
      */
     public com.google.protobuf.ProtocolStringList
@@ -513,14 +513,14 @@ public final class File {
       return fileNames_;
     }
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @return The count of fileNames.
      */
     public int getFileNamesCount() {
       return fileNames_.size();
     }
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @param index The index of the element to return.
      * @return The fileNames at the given index.
      */
@@ -528,7 +528,7 @@ public final class File {
       return fileNames_.get(index);
     }
     /**
-     * <code>repeated string fileNames = 2;</code>
+     * <code>repeated string fileNames = 3;</code>
      * @param index The index of the value to return.
      * @return The bytes of the fileNames at the given index.
      */
@@ -555,7 +555,7 @@ public final class File {
         com.google.protobuf.GeneratedMessage.writeString(output, 1, peerName_);
       }
       for (int i = 0; i < fileNames_.size(); i++) {
-        com.google.protobuf.GeneratedMessage.writeString(output, 2, fileNames_.getRaw(i));
+        com.google.protobuf.GeneratedMessage.writeString(output, 3, fileNames_.getRaw(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -847,12 +847,12 @@ public final class File {
                 bitField0_ |= 0x00000001;
                 break;
               } // case 10
-              case 18: {
+              case 26: {
                 java.lang.String s = input.readStringRequireUtf8();
                 ensureFileNamesIsMutable();
                 fileNames_.add(s);
                 break;
-              } // case 18
+              } // case 26
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -951,7 +951,7 @@ public final class File {
         bitField0_ |= 0x00000002;
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @return A list containing the fileNames.
        */
       public com.google.protobuf.ProtocolStringList
@@ -960,14 +960,14 @@ public final class File {
         return fileNames_;
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @return The count of fileNames.
        */
       public int getFileNamesCount() {
         return fileNames_.size();
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @param index The index of the element to return.
        * @return The fileNames at the given index.
        */
@@ -975,7 +975,7 @@ public final class File {
         return fileNames_.get(index);
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @param index The index of the value to return.
        * @return The bytes of the fileNames at the given index.
        */
@@ -984,7 +984,7 @@ public final class File {
         return fileNames_.getByteString(index);
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @param index The index to set the value at.
        * @param value The fileNames to set.
        * @return This builder for chaining.
@@ -999,7 +999,7 @@ public final class File {
         return this;
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @param value The fileNames to add.
        * @return This builder for chaining.
        */
@@ -1013,7 +1013,7 @@ public final class File {
         return this;
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @param values The fileNames to add.
        * @return This builder for chaining.
        */
@@ -1027,7 +1027,7 @@ public final class File {
         return this;
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearFileNames() {
@@ -1038,7 +1038,7 @@ public final class File {
         return this;
       }
       /**
-       * <code>repeated string fileNames = 2;</code>
+       * <code>repeated string fileNames = 3;</code>
        * @param value The bytes of the fileNames to add.
        * @return This builder for chaining.
        */
@@ -2301,7 +2301,7 @@ public final class File {
     java.lang.String[] descriptorData = {
       "\n\034src/main/protobuf/file.proto\"\021\n\017GetFil" +
       "esRequest\"7\n\020GetFilesResponse\022\020\n\010peerNam" +
-      "e\030\001 \001(\t\022\021\n\tfileNames\030\002 \003(\t\"\037\n\013FileReques" +
+      "e\030\001 \001(\t\022\021\n\tfileNames\030\003 \003(\t\"\037\n\013FileReques" +
       "t\022\020\n\010fileName\030\001 \001(\t\"C\n\014FileResponse\022\014\n\004d" +
       "ata\030\001 \001(\014\022\020\n\010fileName\030\002 \001(\t\022\023\n\013isLastChu" +
       "nk\030\003 \001(\010b\006proto3"

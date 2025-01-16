@@ -40,7 +40,7 @@ public class PeerService {
 
         ConnectionService connectionService = new ConnectionService(peerConfig, networkEventLoopGroup, peerEventLoopGroup);
         PingPongService pingPongService = new PingPongService(connectionService, peerConfig);
-        FileService fileService = new FileService(peerConfig);
+        FileService fileService = new FileService(peerConfig, connectionService);
 
         this.peer = new Peer(peerConfig, connectionService, pingPongService, fileService);
     }
